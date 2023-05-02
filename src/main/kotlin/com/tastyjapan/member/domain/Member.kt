@@ -17,6 +17,9 @@ class Member(
     @Column(name = "member_email")
     val email: String,
 
+    @Column(name = "member_picture")
+    val picture: String,
+
     @Enumerated(EnumType.STRING)
     val role: Role
     ) {

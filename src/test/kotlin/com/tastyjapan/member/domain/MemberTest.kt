@@ -12,9 +12,10 @@ class MemberTest {
         val id: Long = 1
         val name = "chocochip"
         val email = "dev.chocochip@gmail.com"
+        val picture = "https://lh3.googleusercontent.com/ogw/AOLn63FIEWhJRLAtFKsz3zBacrt3-OlUmV5BkCBqbhvs=s64-c-mo"
         val role = Role.USER
 
-        val member = Member(id, name, email, role)
+        val member = Member(id, name, email, picture, role)
 
         assertEquals(id, member.id)
         assertEquals(name, member.name)
