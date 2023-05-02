@@ -1,5 +1,7 @@
 package com.tastyjapan.member.domain
 
+import com.tastyjapan.group.domain.Group
+import com.tastyjapan.review.domain.Review
 import lombok.NoArgsConstructor
 import javax.persistence.*
 
@@ -23,4 +25,10 @@ class Member(
     @Enumerated(EnumType.STRING)
     val role: Role
     ) {
+
+    @OneToMany(mappedBy = "member")
+    var groups: MutableList<Group> = mutableListOf();
+
+    @OneToMany(mappedBy = "member")
+    val reviews: MutableList<Review> = mutableListOf()
 }
