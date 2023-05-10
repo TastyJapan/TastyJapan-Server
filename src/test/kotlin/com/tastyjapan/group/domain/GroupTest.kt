@@ -10,22 +10,23 @@ import org.junit.jupiter.api.Test
 
 class GroupTest {
 
-    lateinit var save: Group
+    lateinit var group: Group
 
     @BeforeEach
     fun setUp() {
-        save = Group(
+        group = Group(
             id = 1L,
             title = "My Favorite Restaurants",
-            member = Member(1L, "John Doe", "johndoe@example.com", "picture.png", Role.USER)
         )
+        val member = Member(1L, "John Doe", "johndoe@example.com", "picture.png", Role.USER)
+        group.member = member
     }
 
     @Test
     fun createSaveTest() {
-        assertEquals(1L, save.id)
-        assertEquals("My Favorite Restaurants", save.title)
-        assertEquals(Member(1L, "John Doe", "johndoe@example.com", "picture.png", Role.USER), save.member)
-    }
 
+        assertEquals(1L, group.id)
+        assertEquals("My Favorite Restaurants", group.title)
+        assertEquals(Member(1L, "John Doe", "johndoe@example.com", "picture.png", Role.USER), group.member)
+    }
 }
