@@ -18,3 +18,9 @@
 - test (when adding missing tests)
 - chore (maintain)
 
+## ERD
+TODO
+
+## API Specs
+TODO
+
