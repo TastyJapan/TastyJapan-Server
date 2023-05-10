@@ -7,16 +7,18 @@ import com.tastyjapan.review.domain.Review
 import com.tastyjapan.group.domain.Group
 import com.tastyjapan.group.domain.GroupRestaurant
 import com.tastyjapan.review.domain.ExternalReview
+import lombok.Getter
 import lombok.NoArgsConstructor
 import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
-class Restaurant(
+@Getter
+data class Restaurant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id")
-    val id: Long,
+    val id: Long? = null,
 
     @Column(name = "restaurant_name")
     val name: String,
@@ -38,7 +40,8 @@ class Restaurant(
 
     @Enumerated(EnumType.STRING)
     val city: City
-){
+) {
+
     /**
      * 연관 관계 메서드
      */
