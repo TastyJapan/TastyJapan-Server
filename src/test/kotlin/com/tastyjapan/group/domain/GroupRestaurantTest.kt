@@ -14,25 +14,18 @@ class GroupRestaurantTest {
 
     @BeforeEach
     fun setUp() {
-        groupRestaurant = GroupRestaurant(
-            id = 1L
-        )
+        groupRestaurant = GroupRestaurant()
     }
 
     @Test
     fun testGetters() {
-        assertEquals(1L, groupRestaurant.id)
         assertEquals(mutableSetOf<Group>(), groupRestaurant.groups)
         assertEquals(mutableSetOf<Restaurant>(), groupRestaurant.restaurants)
     }
 
     @Test
     fun testSetters() {
-        val group = Group(
-            id = 1L,
-            title = "Foodies",
-            member = Member(1L, "John Doe", "johndoe@example.com", "picture.png", Role.USER)
-        )
+        val group = Group(title = "Foodies")
         val restaurant = Restaurant(
             id = 1L,
             name = "Tasty Japan",
@@ -43,7 +36,7 @@ class GroupRestaurantTest {
             city = City.TOKYO,
             summary = "Great Place"
         )
-
+        val member = Member(name = "John Doe", email = "johndoe@example.com", picture = "picture.png", role = Role.USER)
         groupRestaurant.groups.add(group)
         groupRestaurant.restaurants.add(restaurant)
 

@@ -6,12 +6,13 @@ import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
-class GroupRestaurant(
+data class GroupRestaurant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_restaurant_id")
-    val id: Long
-    ){
+    val id: Long? = null
+) {
+
     @OneToMany(mappedBy = "groupRestaurant")
     var groups: MutableSet<Group> = mutableSetOf()
 
@@ -19,3 +20,4 @@ class GroupRestaurant(
     var restaurants: MutableSet<Restaurant> = mutableSetOf()
 
 }
+
