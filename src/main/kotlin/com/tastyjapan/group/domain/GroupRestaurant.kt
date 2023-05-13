@@ -12,12 +12,16 @@ data class GroupRestaurant(
     @Column(name = "group_restaurant_id")
     val id: Long? = null
 ) {
+    /**
+     * 연관 관계 메서드
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false)
+    var groups: Group? = null
 
-    @OneToMany(mappedBy = "groupRestaurant")
-    var groups: MutableSet<Group> = mutableSetOf()
-
-    @OneToMany(mappedBy = "groupRestaurant")
-    var restaurants: MutableSet<Restaurant> = mutableSetOf()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    var restaurants: Restaurant? = null
 
 }
 

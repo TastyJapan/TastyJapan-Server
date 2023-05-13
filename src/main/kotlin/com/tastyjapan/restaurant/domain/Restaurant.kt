@@ -1,10 +1,10 @@
 package com.tastyjapan.restaurant.domain
 
+import com.tastyjapan.city.City
 import com.tastyjapan.menu.domain.Menu
 import com.tastyjapan.picture.domain.RestaurantPicture
 import com.tastyjapan.review.domain.BlogReview
 import com.tastyjapan.review.domain.Review
-import com.tastyjapan.group.domain.Group
 import com.tastyjapan.group.domain.GroupRestaurant
 import com.tastyjapan.review.domain.ExternalReview
 import lombok.Getter
@@ -61,8 +61,7 @@ data class Restaurant(
     @OneToMany(mappedBy = "restaurant")
     val menus: MutableList<Menu> = mutableListOf()
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_restaurant_id")
-    val groupRestaurant: GroupRestaurant? = null
+    @OneToMany(mappedBy = "restaurants")
+    val groupRestaurantList: List<GroupRestaurant> = mutableListOf()
 
 }

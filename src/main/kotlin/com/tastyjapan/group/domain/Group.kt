@@ -25,9 +25,8 @@ data class Group(
     @JoinColumn(name = "member_id", nullable = false)
     var member: Member? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_restaurant_id")
-    var groupRestaurant: GroupRestaurant? = null
+    @OneToMany(mappedBy = "groups")
+    val groupRestaurantList: List<GroupRestaurant> = mutableListOf()
 
 }
 
