@@ -1,6 +1,6 @@
 package com.tastyjapan.review.domain
 
-import com.tastyjapan.restaurant.domain.City
+import com.tastyjapan.city.City
 import com.tastyjapan.restaurant.domain.Restaurant
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

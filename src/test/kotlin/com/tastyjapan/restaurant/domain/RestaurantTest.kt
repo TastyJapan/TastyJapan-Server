@@ -1,10 +1,6 @@
 package com.tastyjapan.restaurant.domain
 
-import com.tastyjapan.menu.domain.Menu
-import com.tastyjapan.picture.domain.RestaurantPicture
-import com.tastyjapan.review.domain.BlogReview
-import com.tastyjapan.review.domain.Review
-import com.tastyjapan.group.domain.Group
+import com.tastyjapan.city.City
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
