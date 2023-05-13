@@ -13,7 +13,7 @@ data class Menu(
     @Column(name = "menu_id")
     val id: Long? = null,
 
-    @Column(name="menu_name")
+    @Column(name = "menu_name")
     val name: String,
 
     @Column(name = "menu_price")
@@ -31,6 +31,6 @@ data class Menu(
      * 연관 관계 메서드
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="restaurant_id")
+    @JoinColumn(name = "restaurant_id")
     var restaurant: Restaurant? = null
 }
