@@ -15,7 +15,9 @@ enum class ErrorType(val errorCode: String, val message: String) {
 
     SERVICE_BEING_CHECKED("SERVICE-001", "서비스가 점검중입니다."),
 
-
+    USER_NOT_FOUND("USER-001", "사용자를 찾을 수 없습니다."),
+    RESTAURANT_NOT_FOUND("RESTAURANT-001", "식당을 찾을 수 없습니다."),
+    REVIEW_NOT_FOUND("REVIEW-001", "리뷰를 찾을 수 없습니다."),
     UNEXPECTED_SERVER_ERROR("SERVER-001", "서버 관리자에게 문의하세요.");
 
 }
