@@ -8,6 +8,8 @@ plugins {
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
     kotlin("kapt") version "1.7.10"
+    kotlin("plugin.allopen") version "1.6.21"
+    kotlin("plugin.noarg") version "1.6.21"
 }
 
 group = "com"
