@@ -10,18 +10,20 @@ data class GroupRestaurant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_restaurant_id")
-    val id: Long? = null
-) {
+    val id: Long? = null,
     /**
      * 연관 관계 메서드
      */
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
-    var groups: Group? = null
+    var groups: Groups,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    var restaurants: Restaurant? = null
+    var restaurants: Restaurant
+) {
+
 
 }
 

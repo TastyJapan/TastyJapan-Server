@@ -62,6 +62,6 @@ data class Restaurant(
     val menus: MutableList<Menu> = mutableListOf()
 
     @OneToMany(mappedBy = "restaurants")
-    val groupRestaurantList: List<GroupRestaurant> = mutableListOf()
+    val groupRestaurantList: MutableList<GroupRestaurant> = mutableListOf()
 
 }

@@ -1,9 +1,8 @@
 package com.tastyjapan.member.domain
 
-import com.tastyjapan.group.domain.Group
+import com.tastyjapan.group.domain.Groups
 import com.tastyjapan.oauth.domain.Oauth
 import com.tastyjapan.review.domain.Review
-import lombok.Getter
 import lombok.NoArgsConstructor
 import javax.persistence.*
 
@@ -31,7 +30,7 @@ data class Member(
      * 연관 관계 메서드
      */
     @OneToMany(mappedBy = "member")
-    var groups: MutableList<Group> = mutableListOf()
+    var groups: MutableList<Groups> = mutableListOf()
 
     @OneToMany(mappedBy = "member")
     var reviews: MutableList<Review> = mutableListOf()

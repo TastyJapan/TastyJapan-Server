@@ -1,8 +1,6 @@
 package com.tastyjapan.review.domain
 
-import com.tastyjapan.group.domain.Group
 import com.tastyjapan.restaurant.domain.Restaurant
-import lombok.Getter
 import lombok.NoArgsConstructor
 import javax.persistence.*
 

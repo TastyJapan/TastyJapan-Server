@@ -1,14 +1,13 @@
 package com.tastyjapan.group.domain
 
 import com.tastyjapan.member.domain.Member
-import com.tastyjapan.restaurant.domain.Restaurant
-import lombok.Getter
 import lombok.NoArgsConstructor
 import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
-data class Group(
+@Table(name = "groups")
+data class Groups(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
@@ -26,7 +25,7 @@ data class Group(
     var member: Member? = null
 
     @OneToMany(mappedBy = "groups")
-    val groupRestaurantList: List<GroupRestaurant> = mutableListOf()
+    var groupRestaurantList: List<GroupRestaurant> = mutableListOf()
 
 }
 
