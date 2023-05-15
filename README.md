@@ -59,4 +59,8 @@ TODO
 ### Menu
 - [ ] 메뉴탭에서 식당의 메뉴를 조회할 수 있다.
 - [ ] 대표적인 메뉴별로 메뉴가 포함된 식당을 조회한다.
+- [ ] 메뉴 조회는 RAMEN, SUSHI, OKONOMIYAKI, YAKITORI, YAKINIKU, TAKOYAKI, ETC로 한정한다.
 - [ ] 메뉴의 필드는 이름, 가격, 메뉴종류, 사진들이다.
+
+### City
+- [ ] 도시는 오사카(OSAKA), 도쿄(TOKYO), 후쿠오카(FUKUOKA), 오키나와(OKINAWA), 삿포로(SAPPORO), 나고야(NAGOYA)로 6개로 집중한다.
