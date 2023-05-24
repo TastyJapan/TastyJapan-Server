@@ -32,7 +32,17 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // Testing
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+    }
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("com.ninja-squad:springmockk:4.0.0")
+
+    // P6SY
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6")
 
     // Spring Docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
@@ -108,4 +118,8 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
     annotation("jakarta.persistence.Embeddable")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
 }
