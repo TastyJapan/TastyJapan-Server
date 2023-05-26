@@ -71,9 +71,6 @@ dependencies {
 
     // Utilities
 //    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
-//    implementation("com.github.ua-parser:uap-java:1.5.4")
-//    implementation("com.github.f4b6a3:ulid-creator:5.1.0")
-
 }
 
 tasks.withType<KotlinCompile> {
