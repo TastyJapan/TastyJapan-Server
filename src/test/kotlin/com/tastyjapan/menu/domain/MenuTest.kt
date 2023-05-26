@@ -1,6 +1,6 @@
 package com.tastyjapan.menu.domain
 
-import com.tastyjapan.restaurant.domain.City
+import com.tastyjapan.city.City
 import com.tastyjapan.restaurant.domain.Restaurant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -18,17 +18,18 @@ class MenuTest {
             price = 1000L,
             menu_sort = MenuSort.RAMEN,
             pictures = mutableListOf("https://www.example.com/ramen.jpg"),
-            restaurant = Restaurant(
-                id = 1L,
-                name = "Tasty Japan",
-                longitude = 35.6895,
-                latitude = 139.6917,
-                address = "Tokyo, Japan",
-                rating = 4.5,
-                city = City.TOKYO,
-                summary = "Great Place"
-            )
         )
+        val restaurant = Restaurant(
+            id = 1L,
+            name = "Tasty Japan",
+            longitude = 35.6895,
+            latitude = 139.6917,
+            address = "Tokyo, Japan",
+            rating = 4.5,
+            city = City.TOKYO,
+            summary = "Great Place"
+        )
+        menu.restaurant = restaurant
     }
 
     @Test

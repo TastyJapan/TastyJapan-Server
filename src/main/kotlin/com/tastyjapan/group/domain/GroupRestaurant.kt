@@ -6,16 +6,24 @@ import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
-class GroupRestaurant(
+data class GroupRestaurant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_restaurant_id")
-    val id: Long
-    ){
-    @OneToMany(mappedBy = "groupRestaurant")
-    var groups: MutableSet<Group> = mutableSetOf()
+    val id: Long? = null,
+    /**
+     * 연관 관계 메서드
+     */
 
-    @OneToMany(mappedBy = "groupRestaurant")
-    var restaurants: MutableSet<Restaurant> = mutableSetOf()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false)
+    var groups: Groups,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    var restaurants: Restaurant
+) {
+
 
 }
+

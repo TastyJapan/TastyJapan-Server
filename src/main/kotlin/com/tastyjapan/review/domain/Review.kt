@@ -7,24 +7,21 @@ import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
-class Review(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
-    val id: Long,
+data class Review(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "review_id") val id: Long? = null,
 
-    @Column(name = "review_content")
-    val content: String,
+    @Column(name = "review_content") val content: String,
 
+    @Column(name = "rating") val rating: Double
+) {
     /**
      * 연관 관계 메서드
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="restaurant_id")
-    val restaurant: Restaurant,
+    @JoinColumn(name = "restaurant_id")
+    var restaurant: Restaurant? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    val member: Member,
-) {
+    @JoinColumn(name = "member_id")
+    var member: Member? = null
 }

@@ -1,4 +1,4 @@
-package com.tastyjapan.restaurant.domain
+package com.tastyjapan.city
 
 enum class City {
     OSAKA, TOKYO, FUKUOKA, SAPPORO, NAGOYA, OKINAWA

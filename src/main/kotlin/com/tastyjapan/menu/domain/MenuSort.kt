@@ -4,5 +4,5 @@ import lombok.Getter
 
 @Getter
 enum class MenuSort {
-    RAMEN, SUSHI, ETC
+    RAMEN, SUSHI, OKONOMIYAKI, YAKITORI, YAKINIKU, TAKOYAKI, ETC
 }

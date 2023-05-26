@@ -1,6 +1,6 @@
 package com.tastyjapan.review.domain
 
-import com.tastyjapan.restaurant.domain.City
+import com.tastyjapan.city.City
 import com.tastyjapan.restaurant.domain.Restaurant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -18,17 +18,19 @@ class ExternalReviewTest {
             url = "https://www.example.com/user123.jpg",
             nickname = "User123",
             rating = 4.5,
-            restaurant = Restaurant(
-                id = 1L,
-                name = "Tasty Japan",
-                longitude = 35.6895,
-                latitude = 139.6917,
-                address = "Tokyo, Japan",
-                rating = 4.5,
-                summary = "It is tasty",
-                city = City.TOKYO
-            )
+            source = "Tablelog"
         )
+        val restaurant = Restaurant(
+            id = 1L,
+            name = "Tasty Japan",
+            longitude = 35.6895,
+            latitude = 139.6917,
+            address = "Tokyo, Japan",
+            rating = 4.5,
+            summary = "It is tasty",
+            city = City.TOKYO
+        )
+        externalReview.restaurant = restaurant
     }
 
     @Test
@@ -38,6 +40,7 @@ class ExternalReviewTest {
         assertEquals("https://www.example.com/user123.jpg", externalReview.url)
         assertEquals("User123", externalReview.nickname)
         assertEquals(4.5, externalReview.rating)
+        assertEquals("Tablelog", externalReview.source)
     }
 
 }
