@@ -20,4 +20,9 @@ class MenuService (val menuRepository: MenuRepository, val convertStringToMenu: 
             .map { menu -> MenuResponse(menu) }
             .collect(Collectors.toList())
     }
+
+    fun createMenu(restaurantId: Long, menuRequest: MenuRequest){
+        val menuEnum = convertStringToMenu.convertMenuToEnum(menuRequest.menu_sort)
+
+    }
 }
