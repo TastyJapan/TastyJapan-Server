@@ -74,6 +74,14 @@ class GroupService(
         groups.groupRestaurantList = groupRestaurantList
         return groups.id
     }
+
+    fun getGroups(memberId: Long): List<GroupsResponse> {
+        invalidArgumentException.checkMemberId(memberId)
+        return groupRepository.findGroupsByMemberId(memberId).stream()
+            .map { group -> GroupMapper.INSTANCE.groupEntityToResponse(group) }
+            .collect(Collectors.toList())
+    }
+
     @Transactional
     fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {

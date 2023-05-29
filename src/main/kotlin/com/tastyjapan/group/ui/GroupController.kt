@@ -41,4 +41,14 @@ class GroupController(val groupService: GroupService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    /**
+     * 그룹들을 반환합니다.
+     */
+    @GetMapping("/{user-id}")
+    fun getGroups(@PathVariable("user-id") userId: Long): ResponseEntity<ApiResponse<List<GroupsResponse>>> {
+        val result = groupService.getGroups(userId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }

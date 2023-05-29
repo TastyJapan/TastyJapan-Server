@@ -11,4 +11,11 @@ import com.tastyjapan.group.domain.QGroups.groups
 class GroupRepositoryImpl(entityManager: EntityManager) : GroupRepositoryCustom {
     private val queryFactory: JPAQueryFactory = JPAQueryFactory(entityManager)
 
+    override fun findGroupsByMemberId(memberId: Long): List<Groups> {
+        return queryFactory
+            .select(groups)
+            .from(groups)
+            .where(groups.member.id.eq(memberId)).fetch()
+    }
+
 }

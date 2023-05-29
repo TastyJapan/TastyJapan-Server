@@ -53,6 +53,27 @@ class GroupControllerTest {
     }
 
     @Test
+    fun getGroups() {
+        val groupService = mockk<GroupService>()
+        val groupController = GroupController(groupService)
+        val userId = 123L
+
+        val expectedGroupsResponse = listOf(
+            GroupsResponse(id = 1L, title = "Group 1"),
+            GroupsResponse(id = 2L, title = "Group 2")
+        )
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedGroupsResponse))
+
+        every {
+            groupService.getGroups(userId)
+        } returns expectedGroupsResponse
+
+        val response = groupController.getGroups(userId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
+    @Test
     fun addOneRestaurant(){
         val groupService = mockk<GroupService>()
         val groupController = GroupController(groupService)

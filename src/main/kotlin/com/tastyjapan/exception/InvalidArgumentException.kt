@@ -28,4 +28,11 @@ class InvalidArgumentException(
         }
     }
 
+    fun checkReviewId(reviewId: Long) {
+        try{
+            reviewRepository.checkReviewId(reviewId)
+        } catch (e: Exception) {
+            throw TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.REVIEW_NOT_FOUND))
+        }
+    }
 }

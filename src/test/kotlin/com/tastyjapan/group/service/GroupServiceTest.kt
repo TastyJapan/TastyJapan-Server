@@ -73,6 +73,21 @@ class GroupServiceTest {
         // then
         assertThat(groupRepository.findAll().get(0).id).isEqualTo(groupId)
     }
+
+    @Test
+    @DisplayName("그룹을 조회합니다.")
+    fun getGroups() {
+        // given
+        val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id))
+        groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+
+        // when
+        val groups = groupService.getGroups(memberId = member.id)
+
+        // then
+        assertThat(groups.size).isEqualTo(1)
+        assertThat(groups[0].title).isEqualTo("테스트 그룹")
+    }
     @Test
     fun addOneRestaurant(){
         // given
