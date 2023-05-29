@@ -37,4 +37,25 @@ class ReviewControllerTest {
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
     }
 
+    @Test
+    fun getReviewsByRestaurant() {
+        val reviewService = mockk<ReviewService>()
+        val reviewController = ReviewController(reviewService)
+        val restaurantId = 456L
+
+        val expectedRestaurantReviewsResponse = listOf(
+            RestaurantReviewsResponse(user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()), rating = 4.0, content = "Good food"),
+            RestaurantReviewsResponse(user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()), rating = 3.5, content = "Average experience")
+        )
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedRestaurantReviewsResponse))
+
+        every {
+            reviewService.getReviewByRestaurantId(restaurantId)
+        } returns expectedRestaurantReviewsResponse
+
+        val response = reviewController.getReviewsByRestaurant(restaurantId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
 }

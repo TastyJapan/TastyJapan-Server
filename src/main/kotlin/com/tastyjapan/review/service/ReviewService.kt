@@ -50,4 +50,10 @@ class ReviewService(
         return saved.id
     }
 
+    fun getReviewByRestaurantId(restaurantId: Long): List<RestaurantReviewsResponse> {
+        return reviewRepository.findReviewByRestaurantId(restaurantId).stream()
+            .map { review -> ReviewMapper.INSTANCE.reviewEntityToRestaurantReviews(review) }
+            .collect(Collectors.toList())
+    }
+
 }
