@@ -73,3 +73,18 @@ class GroupServiceTest {
         // then
         assertThat(groupRepository.findAll().get(0).id).isEqualTo(groupId)
     }
+    @Test
+    fun addOneRestaurant(){
+        // given
+        val groups = Groups(title = "My Restaurant")
+        groups.addMember(member)
+        groupRepository.save(groups)
+
+
+        // when
+        groupService.addOneRestaurant(groupId = groups.id, restaurantId = restaurant1.id)
+
+        // then
+        assertThat(groupRestaurantRepository.findGroupRestaurantByGroupId(groupId = groups.id).size).isEqualTo(1)
+    }
+}

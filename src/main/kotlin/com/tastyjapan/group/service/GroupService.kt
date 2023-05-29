@@ -74,6 +74,30 @@ class GroupService(
         groups.groupRestaurantList = groupRestaurantList
         return groups.id
     }
+    @Transactional
+    fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
+        val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {
+            TastyJapanException(
+                HttpStatus.BAD_REQUEST,
+                ExceptionResponse(ErrorType.RESTAURANT_NOT_FOUND)
+            )
+        }
+        val groups = groupRepository.findById(groupId).orElseThrow {
+            TastyJapanException(
+                HttpStatus.BAD_REQUEST,
+                ExceptionResponse(ErrorType.GROUP_NOT_FOUND)
+            )
+        }
+
+        val groupRestaurant = GroupRestaurant(groups = groups, restaurants = restaurant)
+
+        restaurant.addGroupRestaurant(groupRestaurant)
+        groups.addGroupRestaurant(groupRestaurant)
+
+        groupRestaurantRepository.save(groupRestaurant)
+        return groupId
+    }
+
     /**
      *
      */

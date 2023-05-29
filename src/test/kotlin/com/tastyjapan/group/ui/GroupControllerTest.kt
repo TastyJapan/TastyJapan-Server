@@ -52,4 +52,21 @@ class GroupControllerTest {
         assertEquals((expectedResponse.body?.getResponse() ?: "null"), (response.body?.getResponse() ?: "null"))
     }
 
+    @Test
+    fun addOneRestaurant(){
+        val groupService = mockk<GroupService>()
+        val groupController = GroupController(groupService)
+        val groupId = 123L
+        val restaurantId = 456L
+
+        val expectedAdd = 123L
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedAdd))
+
+        every { groupService.addOneRestaurant(groupId,restaurantId ) }returns expectedAdd
+
+        val response = groupController.addOneRestaurant(groupId, restaurantId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
 }

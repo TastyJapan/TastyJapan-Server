@@ -27,4 +27,18 @@ class GroupController(val groupService: GroupService) {
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
+
+    /**
+     * 식당을 하나 추가합니다.
+     */
+    @PostMapping("/{group-id}/restaurants/{restaurant-id}")
+    fun addOneRestaurant(
+        @PathVariable("group-id") groupId: Long,
+        @PathVariable("restaurant-id") restaurantId: Long
+    ): ResponseEntity<ApiResponse<Long>> {
+        val result = groupService.addOneRestaurant(groupId, restaurantId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }
