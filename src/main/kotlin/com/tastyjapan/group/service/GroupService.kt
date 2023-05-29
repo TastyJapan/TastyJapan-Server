@@ -149,6 +149,24 @@ class GroupService(
         }
         return group.id
     }
+
+    @Transactional
+    fun deleteGroup(groupId: Long): Boolean {
+
+        groupRestaurantRepository.findGroupRestaurantByGroupId(groupId).forEach { groupRestaurant ->
+            //  Restaurant에서 GroupRestaurant 제거
+            val restaurant = groupRestaurant.restaurants
+            restaurant.groupRestaurantList.remove(groupRestaurant)
+
+            // GroupRestaurant 삭제
+            restaurantRepository.save(restaurant)
+            groupRestaurantRepository.delete(groupRestaurant)
+        }
+        // Group 삭제
+        groupRepository.deleteGroup(groupId)
+        return true
+    }
+
     @Transactional
     fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {

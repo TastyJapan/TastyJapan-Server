@@ -139,6 +139,25 @@ class GroupControllerTest {
     }
 
     @Test
+    fun deleteGroup() {
+        val groupService = mockk<GroupService>()
+        val groupController = GroupController(groupService)
+        val groupId = 123L
+
+        val expectedDeleted = true
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedDeleted))
+
+        every {
+            groupService.deleteGroup(groupId)
+        } returns expectedDeleted
+
+        val response = groupController.deleteGroup(groupId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
+
+    @Test
     fun addOneRestaurant(){
         val groupService = mockk<GroupService>()
         val groupController = GroupController(groupService)

@@ -139,6 +139,21 @@ class GroupServiceTest {
             ).get().restaurants.id
         ).isEqualTo(restaurant2.id)
     }
+
+    @Test
+    fun deleteGroup() {
+        // given
+        val groups = Groups(title = "My Restaurant")
+        groups.addMember(member)
+        groupRepository.save(groups)
+
+        // when
+        groupService.deleteGroup(groupId = groups.id)
+
+        // then
+        assertThat(groupRepository.findAll().size).isEqualTo(0)
+    }
+
     @Test
     fun addOneRestaurant(){
         // given

@@ -86,4 +86,14 @@ class GroupController(val groupService: GroupService) {
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
+
+    /**
+     * 그룹을 삭제합니다.
+     */
+    @DeleteMapping("/{group-id}")
+    fun deleteGroup(@PathVariable("group-id") groupId: Long): ResponseEntity<ApiResponse<Boolean>> {
+        val result = groupService.deleteGroup(groupId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
 }
