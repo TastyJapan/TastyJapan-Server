@@ -97,6 +97,27 @@ class GroupControllerTest {
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
     }
+
+    @Test
+    fun updateGroupTitle() {
+        val groupService = mockk<GroupService>()
+        val groupController = GroupController(groupService)
+        val groupId = 123L
+        val newTitle = "Updated Group Title"
+
+        val expectedUpdatedGroupId = 123L
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedUpdatedGroupId))
+
+        every {
+            groupService.updateGroupTitle(groupId, newTitle)
+        } returns expectedUpdatedGroupId
+
+        val response = groupController.updateGroupTitle(groupId, newTitle)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
+
     @Test
     fun addOneRestaurant(){
         val groupService = mockk<GroupService>()

@@ -102,6 +102,20 @@ class GroupServiceTest {
         // then
         assertThat(groupRestaurants.restaurantList.size).isEqualTo(2)
     }
+
+    @Test
+    fun updateGroupTitle() {
+        // given
+        val groups = Groups(title = "My Restaurant")
+        groups.addMember(member)
+        groupRepository.save(groups)
+
+        // when
+        groupService.updateGroupTitle(groupId = groups.id, title = "My Restaurant 2")
+
+        // then
+        assertThat(groupRepository.findById(groups.id).get().title).isEqualTo("My Restaurant 2")
+    }
     @Test
     fun addOneRestaurant(){
         // given

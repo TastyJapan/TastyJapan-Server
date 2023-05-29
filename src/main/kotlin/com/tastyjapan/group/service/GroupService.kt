@@ -100,6 +100,12 @@ class GroupService(
             restaurantList = restaurantResult
         )
     }
+
+    @Transactional
+    fun updateGroupTitle(groupId: Long, title: String): Long {
+        return groupRepository.updateGroupTitle(groupId, title)
+    }
+
     @Transactional
     fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {

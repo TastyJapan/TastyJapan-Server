@@ -61,4 +61,17 @@ class GroupController(val groupService: GroupService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+
+    /**
+     * 그룹을 제목을 수정합니다.
+     */
+    @PutMapping("/{group-id}/title")
+    fun updateGroupTitle(
+        @PathVariable("group-id") groupId: Long, @RequestBody title: String
+    ): ResponseEntity<ApiResponse<Long>> {
+        val result = groupService.updateGroupTitle(groupId, title)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }

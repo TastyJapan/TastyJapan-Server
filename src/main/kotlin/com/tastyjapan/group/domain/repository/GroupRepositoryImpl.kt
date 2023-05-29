@@ -18,4 +18,10 @@ class GroupRepositoryImpl(entityManager: EntityManager) : GroupRepositoryCustom 
             .where(groups.member.id.eq(memberId)).fetch()
     }
 
+    override fun updateGroupTitle(groupId: Long, title: String): Long {
+        return queryFactory.update(groups)
+            .set(groups.title, title)
+            .where(groups.id.eq(groupId))
+            .execute()
+    }
 }
