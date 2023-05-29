@@ -50,4 +50,28 @@ class MemberControllerTest {
         assertThat(expectedAnswer.body?.getResponse()).isEqualTo(response.body?.getResponse())
     }
 
+    @Test
+    fun getUser() {
+        val memberService = mockk<MemberService>()
+        val memberController = MemberController(memberService)
+
+        val memberId = 1L
+        val memberName = "name"
+        val email = "email"
+        val picture = "myPicture"
+        val expectedMemberList = MemberResponse(
+                id = memberId,
+                name = memberName,
+                email = email,
+                picture = picture
+            )
+
+        val expectedAnswer = ResponseEntity.ok(ApiUtils.success(expectedMemberList))
+        every { memberService.getMember(memberId)} returns expectedMemberList
+
+        val response = memberController.getUser(memberId)
+
+        assertThat(expectedAnswer.statusCode).isEqualTo(response.statusCode)
+        assertThat(expectedAnswer.body?.getResponse()).isEqualTo(response.body?.getResponse())
+    }
 }

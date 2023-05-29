@@ -45,4 +45,19 @@ class MemberServiceTest {
         assertThat(member1.name).isEqualTo(members[0].name)
         assertThat(member2.name).isEqualTo(members[1].name)
     }
+
+    @DisplayName("특정 사용자 조회에 성공한다.")
+    @Test
+    fun getMemberTest(){
+        // given
+        val member1 = createMemberChoco()
+        val member2 = createMemberKyk()
+        memberRepository.saveAll(listOf(member1, member2))
+
+        // when
+        val member = memberService.getMember(member1.id)
+
+        // then
+        assertThat(member1.name).isEqualTo(member.name)
+    }
 }

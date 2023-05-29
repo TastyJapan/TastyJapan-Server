@@ -25,4 +25,14 @@ class MemberService(val memberRepository: MemberRepository) {
             .collect(Collectors.toList())
     }
 
+    fun getMember(memberId: Long): MemberResponse {
+        val member = memberRepository.findById(memberId).orElseThrow {
+            TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.USER_NOT_FOUND))
+        }
+
+        return Stream.of(member)
+            .map { MemberMapper.INSTANCE.memberEntityToResponse(it) }
+            .findFirst()
+            .orElseThrow() // or return null or throw exception if necessary
+    }
 }

@@ -22,4 +22,11 @@ class MemberController(val memberService: MemberService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    @GetMapping("/{user-id}")
+    fun getUser(@PathVariable("user-id") userId: Long): ResponseEntity<ApiResponse<MemberResponse>> {
+        val member = memberService.getMember(userId)
+        val apiResponse = ApiUtils.success(member)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }
