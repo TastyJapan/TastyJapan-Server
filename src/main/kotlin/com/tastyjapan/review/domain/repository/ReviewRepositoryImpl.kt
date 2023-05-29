@@ -22,4 +22,13 @@ class ReviewRepositoryImpl(entityManager: EntityManager) : ReviewRepositoryCusto
             .where(review.member.id.eq(memberId).and(review.isDeleted.isFalse))
             .fetch()
     }
+
+    override fun updateReview(reviewId: Long, content: String, rating: Double): Long {
+        return queryFactory.update(review)
+            .where(review.id.eq(reviewId))
+            .set(review.content, content)
+            .set(review.rating, rating)
+            .execute()
+    }
+
 }

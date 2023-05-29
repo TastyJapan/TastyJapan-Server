@@ -50,4 +50,13 @@ class ReviewController(val reviewService: ReviewService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    @PutMapping("/{review-id}")
+    fun updateReview(
+        @PathVariable("review-id") reviewId: Long,
+        @RequestBody reviewRequest: ReviewRequest
+    ): ResponseEntity<ApiResponse<Long>> {
+        val result = reviewService.updateReview(reviewId, reviewRequest)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
 }

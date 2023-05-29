@@ -66,4 +66,11 @@ class ReviewService(
         return reviewRepository.findReviewByMemberId(userId).stream()
             .map { review -> ReviewMapper.INSTANCE.reviewEntityToUserReviews(review) }.collect(Collectors.toList())
     }
+
+    @Transactional
+    fun updateReview(reviewId: Long, reviewRequest: ReviewRequest): Long {
+        invalidArgumentException.checkReviewId(reviewId)
+        reviewRepository.updateReview(reviewId, reviewRequest.content, reviewRequest.rating)
+        return reviewId
+    }
 }

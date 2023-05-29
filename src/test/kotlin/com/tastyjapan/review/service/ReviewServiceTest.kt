@@ -125,4 +125,28 @@ class ReviewServiceTest {
         assertThat(reviewList.size).isEqualTo(1)
         assertThat(reviewList[0].content).isEqualTo(review.content)
     }
+
+    @DisplayName("리뷰 수정에 성공한다.")
+    @Test
+    fun updateReviewTest() {
+        // given
+        val review = Review(content = "맛있어요", rating = 5.0)
+        restaurant.addReview(review)
+        member.addReview(review)
+        reviewRepository.save(review)
+
+        val reviewRequest = ReviewRequest(
+            restaurantId = restaurant.id,
+            userId = member.id,
+            content = "맛없어졌어요",
+            rating = 1.0
+        )
+
+        // when
+        val reviewId = reviewService.updateReview(review.id, reviewRequest)
+
+        // then
+        assertThat(reviewRepository.findAll().size).isEqualTo(1)
+        assertThat(reviewRepository.findById(reviewId).get().content).isEqualTo(reviewRequest.content)
+    }
 }
