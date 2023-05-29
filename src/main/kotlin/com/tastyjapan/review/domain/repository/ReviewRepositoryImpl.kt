@@ -31,4 +31,16 @@ class ReviewRepositoryImpl(entityManager: EntityManager) : ReviewRepositoryCusto
             .execute()
     }
 
+    override fun deleteReview(reviewId: Long): Long {
+        return queryFactory.update(review)
+            .where(review.id.eq(reviewId))
+            .set(review.isDeleted, true)
+            .execute()
+    }
+    override fun checkReviewId(reviewId: Long): Boolean {
+        return queryFactory.selectOne()
+            .from(review)
+            .where(review.id.eq(reviewId).and(review.isDeleted.isFalse))
+            .fetchFirst() != null
+    }
 }

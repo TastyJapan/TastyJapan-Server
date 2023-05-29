@@ -124,4 +124,22 @@ class ReviewControllerTest {
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
     }
 
+    @Test
+    fun deleteReview() {
+        val reviewService = mockk<ReviewService>()
+        val reviewController = ReviewController(reviewService)
+        val reviewId = 123L
+
+        val expectedDeleted = true
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedDeleted))
+
+        every {
+            reviewService.deleteReview(reviewId)
+        } returns expectedDeleted
+
+        val response = reviewController.deleteReview(reviewId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
 }

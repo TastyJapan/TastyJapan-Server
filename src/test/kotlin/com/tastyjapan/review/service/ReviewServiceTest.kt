@@ -149,4 +149,20 @@ class ReviewServiceTest {
         assertThat(reviewRepository.findAll().size).isEqualTo(1)
         assertThat(reviewRepository.findById(reviewId).get().content).isEqualTo(reviewRequest.content)
     }
+
+    @DisplayName("리뷰 삭제에 성공한다.")
+    @Test
+    fun deleteReviewTest() {
+        // given
+        val review = Review(content = "맛있어요", rating = 5.0)
+        restaurant.addReview(review)
+        member.addReview(review)
+        reviewRepository.save(review)
+
+        // when
+        reviewService.deleteReview(review.id)
+
+        // then
+        assertThat(reviewRepository.findReviewByMemberId(memberId = member.id).size).isEqualTo(0)
+    }
 }

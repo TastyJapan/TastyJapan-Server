@@ -73,4 +73,11 @@ class ReviewService(
         reviewRepository.updateReview(reviewId, reviewRequest.content, reviewRequest.rating)
         return reviewId
     }
+
+    @Transactional
+    fun deleteReview(reviewId: Long): Boolean {
+        invalidArgumentException.checkReviewId(reviewId)
+        reviewRepository.deleteReview(reviewId)
+        return true
+    }
 }

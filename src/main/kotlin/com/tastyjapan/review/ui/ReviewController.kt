@@ -59,4 +59,13 @@ class ReviewController(val reviewService: ReviewService) {
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
+
+    @DeleteMapping("/{review-id}")
+    fun deleteReview(
+        @PathVariable("review-id") reviewId: Long
+    ): ResponseEntity<ApiResponse<Boolean>> {
+        val result = reviewService.deleteReview(reviewId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
 }
