@@ -56,4 +56,10 @@ class ReviewService(
             .collect(Collectors.toList())
     }
 
+    fun getBlogReviewByRestaurantId(restaurantId: Long): List<BlogReviewResponse> {
+        return blogReviewRepository.findReviewByRestaurantId(restaurantId).stream()
+            .map { review -> ReviewMapper.INSTANCE.blogReviewEntityToBlogReviews(review) }
+            .collect(Collectors.toList())
+    }
+
 }

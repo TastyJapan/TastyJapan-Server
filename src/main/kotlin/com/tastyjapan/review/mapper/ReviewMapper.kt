@@ -17,4 +17,5 @@ interface ReviewMapper {
 
     @Mapping(source = "member", target = "user")
     fun reviewEntityToRestaurantReviews(review: Review): RestaurantReviewsResponse
+    fun blogReviewEntityToBlogReviews(blogReview: BlogReview): BlogReviewResponse
 }

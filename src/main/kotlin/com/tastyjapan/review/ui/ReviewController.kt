@@ -32,4 +32,12 @@ class ReviewController(val reviewService: ReviewService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    @GetMapping("/restaurants/{restaurant-id}/blogs")
+    fun getBlogReviewsByRestaurant(
+        @PathVariable("restaurant-id") restaurantId: Long
+    ): ResponseEntity<ApiResponse<List<BlogReviewResponse>>> {
+        val result = reviewService.getBlogReviewByRestaurantId(restaurantId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
 }

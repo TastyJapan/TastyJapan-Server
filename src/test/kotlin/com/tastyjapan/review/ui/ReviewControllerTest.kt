@@ -58,4 +58,27 @@ class ReviewControllerTest {
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
     }
+
+    @Test
+    fun getBlogReviewsByRestaurant() {
+        val reviewService = mockk<ReviewService>()
+        val reviewController = ReviewController(reviewService)
+        val restaurantId = 456L
+
+        val expectedBlogReviewsResponse = listOf(
+            BlogReviewResponse(url = "https://www.google.com", source = BlogSource.ETC),
+            BlogReviewResponse(url = "https://www.google.com", source = BlogSource.ETC),
+        )
+        val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedBlogReviewsResponse))
+
+        every {
+            reviewService.getBlogReviewByRestaurantId(restaurantId)
+        } returns expectedBlogReviewsResponse
+
+        val response = reviewController.getBlogReviewsByRestaurant(restaurantId)
+
+        assertEquals(expectedResponse.statusCode, response.statusCode)
+        assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
+    }
+
 }
