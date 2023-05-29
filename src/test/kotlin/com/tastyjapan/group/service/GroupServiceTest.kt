@@ -116,6 +116,29 @@ class GroupServiceTest {
         // then
         assertThat(groupRepository.findById(groups.id).get().title).isEqualTo("My Restaurant 2")
     }
+
+    @Test
+    @Transactional
+    fun updateGroupRestaurants() {
+        // given
+        val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id))
+        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+
+        // when
+        val groupRestaurantsUpdateRequest = GroupRestaurantsUpdateRequest(restaurantList = listOf(restaurant2.id))
+        val result = groupService.updateGroupRestaurants(
+            groupId = groupId,
+            groupRestaurantsUpdateRequest = groupRestaurantsUpdateRequest
+        )
+
+        // then
+        assertThat(groupRepository.findById(groupId).get().id).isEqualTo(groupId)
+        assertThat(
+            groupRestaurantRepository.findById(
+                groupRepository.findById(groupId).get().groupRestaurantList.get(0).id
+            ).get().restaurants.id
+        ).isEqualTo(restaurant2.id)
+    }
     @Test
     fun addOneRestaurant(){
         // given

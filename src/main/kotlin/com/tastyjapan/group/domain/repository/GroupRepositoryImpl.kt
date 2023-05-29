@@ -24,4 +24,9 @@ class GroupRepositoryImpl(entityManager: EntityManager) : GroupRepositoryCustom 
             .where(groups.id.eq(groupId))
             .execute()
     }
+    override fun countGroupsByMemberId(memberId: Long): Int {
+        return queryFactory.selectFrom(groups)
+            .where(groups.member.id.eq(memberId))
+            .fetch().size
+    }
 }

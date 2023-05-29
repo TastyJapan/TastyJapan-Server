@@ -107,6 +107,49 @@ class GroupService(
     }
 
     @Transactional
+    fun updateGroupRestaurants(groupId: Long, groupRestaurantsUpdateRequest: GroupRestaurantsUpdateRequest): Long {
+        countRestaurantCount(groupRestaurantsUpdateRequest.restaurantList)
+
+        // 1. Group 조회
+        val group = groupRepository.findById(groupId)
+            .orElseThrow { TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.GROUP_NOT_FOUND)) }
+
+        // 2. GroupRestaurant들 삭제 +  Restaurant에서 GroupRestaurant 삭제
+        groupRestaurantRepository.findGroupRestaurantByGroupId(groupId).forEach { groupRestaurant ->
+            //  Restaurant에서 GroupRestaurant 제거
+            val restaurant = groupRestaurant.restaurants
+            restaurant.groupRestaurantList.remove(groupRestaurant)
+
+            // GroupRestaurant 삭제
+            restaurantRepository.save(restaurant)
+            groupRestaurantRepository.delete(groupRestaurant)
+
+            group.groupRestaurantList.remove(groupRestaurant)
+        }
+
+        // 3. GroupRestaurant 생성 + Restaurant에 GroupRestaurant 추가
+        groupRestaurantsUpdateRequest.restaurantList.forEach() { restaurantId ->
+            val restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow {
+                    TastyJapanException(
+                        HttpStatus.BAD_REQUEST,
+                        ExceptionResponse(ErrorType.RESTAURANT_NOT_FOUND)
+                    )
+                }
+
+            // groupRestaurant 생성
+            val groupRestaurant = GroupRestaurant(groups = group, restaurants = restaurant)
+            // groupRestaurantList에 추가
+            group.groupRestaurantList.add(groupRestaurant)
+
+            // restaurant 추가
+            restaurant.addGroupRestaurant(groupRestaurant)
+            restaurantRepository.save(restaurant)
+            groupRestaurantRepository.save(groupRestaurant)
+        }
+        return group.id
+    }
+    @Transactional
     fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {
             TastyJapanException(

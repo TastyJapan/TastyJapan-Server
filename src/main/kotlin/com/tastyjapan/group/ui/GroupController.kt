@@ -74,4 +74,16 @@ class GroupController(val groupService: GroupService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    /**
+     * 그룹의 식당 목록을 수정합니다.
+     */
+    @PutMapping("/{group-id}/restaurants")
+    fun updateGroupRestaurants(
+        @PathVariable("group-id") groupId: Long,
+        @RequestBody groupRestaurantsUpdateRequest: GroupRestaurantsUpdateRequest
+    ): ResponseEntity<ApiResponse<Long>> {
+        val result = groupService.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
 }
