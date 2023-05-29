@@ -41,4 +41,34 @@ class MenuTest {
         assertEquals(mutableListOf("https://www.example.com/ramen.jpg"), menu.pictures)
     }
 
+    @Test
+    fun testEquals() {
+        val otherMenu = Menu(
+            id = menu.id,
+            name = menu.name,
+            price = menu.price,
+            menu_sort = menu.menu_sort,
+            pictures = menu.pictures.toMutableList()
+        )
+        assertEquals(menu, otherMenu)
+    }
+
+    @Test
+    fun testHashCode() {
+        val otherMenu = Menu(
+            id = menu.id,
+            name = menu.name,
+            price = menu.price,
+            menu_sort = menu.menu_sort,
+            pictures = menu.pictures.toMutableList()
+        )
+        assertEquals(menu.hashCode(), otherMenu.hashCode())
+    }
+
+    @Test
+    fun testToString() {
+        val expectedString =
+            "Menu(id=${menu.id}, name='${menu.name}', price=${menu.price}, menu_sort=${menu.menu_sort}, pictures=${menu.pictures}, restaurant=${menu.restaurant?.id})"
+        assertEquals(expectedString, menu.toString())
+    }
 }
