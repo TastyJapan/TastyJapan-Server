@@ -17,4 +17,9 @@ class ReviewRepositoryImpl(entityManager: EntityManager) : ReviewRepositoryCusto
             .fetch()
     }
 
+    override fun findReviewByMemberId(memberId: Long): List<Review> {
+        return queryFactory.selectFrom(review)
+            .where(review.member.id.eq(memberId).and(review.isDeleted.isFalse))
+            .fetch()
+    }
 }

@@ -62,4 +62,8 @@ class ReviewService(
             .collect(Collectors.toList())
     }
 
+    fun getReviewByUserId(userId: Long): List<UserReviewResponse> {
+        return reviewRepository.findReviewByMemberId(userId).stream()
+            .map { review -> ReviewMapper.INSTANCE.reviewEntityToUserReviews(review) }.collect(Collectors.toList())
+    }
 }

@@ -108,4 +108,21 @@ class ReviewServiceTest {
         assertThat(blogReviewList.size).isEqualTo(1)
         assertThat(blogReviewList[0].url).isEqualTo(blogReview.url)
     }
+
+    @DisplayName("유저 id로 리뷰 조회에 성공한다.")
+    @Test
+    fun getReviewByUserIdTest() {
+        // given
+        val review = Review(content = "맛있어요", rating = 5.0)
+        restaurant.addReview(review)
+        member.addReview(review)
+        reviewRepository.save(review)
+
+        // when
+        val reviewList = reviewService.getReviewByUserId(member.id)
+
+        // then
+        assertThat(reviewList.size).isEqualTo(1)
+        assertThat(reviewList[0].content).isEqualTo(review.content)
+    }
 }

@@ -40,4 +40,14 @@ class ReviewController(val reviewService: ReviewService) {
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
+
+    @GetMapping("/users/{user-id}")
+    fun getUserReviews(
+        @PathVariable("user-id") userId: Long
+    ): ResponseEntity<ApiResponse<List<UserReviewResponse>>> {
+        val result = reviewService.getReviewByUserId(userId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }
