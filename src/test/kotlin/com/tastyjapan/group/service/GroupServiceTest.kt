@@ -88,6 +88,20 @@ class GroupServiceTest {
         assertThat(groups.size).isEqualTo(1)
         assertThat(groups[0].title).isEqualTo("테스트 그룹")
     }
+
+    @Test
+    @DisplayName("그룹의 식당 목록을 조회합니다.")
+    fun getGroupRestaurants() {
+        // given
+        val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id, restaurant2.id))
+        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+
+        // when
+        val groupRestaurants = groupService.getGroupRestaurants(groupId = groupId)
+
+        // then
+        assertThat(groupRestaurants.restaurantList.size).isEqualTo(2)
+    }
     @Test
     fun addOneRestaurant(){
         // given

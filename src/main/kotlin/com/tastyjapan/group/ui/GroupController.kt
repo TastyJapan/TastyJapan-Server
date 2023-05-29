@@ -51,4 +51,14 @@ class GroupController(val groupService: GroupService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    /**
+     * 그룹의 식당 리스트를 반환합니다.
+     */
+    @GetMapping("/{group-id}/restaurants")
+    fun getGroupRestaurants(@PathVariable("group-id") groupId: Long): ResponseEntity<ApiResponse<GroupWithRestaurantResponse>> {
+        val result = groupService.getGroupRestaurants(groupId)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
 }

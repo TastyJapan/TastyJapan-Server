@@ -82,6 +82,24 @@ class GroupService(
             .collect(Collectors.toList())
     }
 
+    fun getGroupRestaurants(groupId: Long): GroupWithRestaurantResponse {
+        val groupRestaurantList = groupRestaurantRepository.findGroupRestaurantByGroupId(groupId)
+        if (groupRestaurantList.isEmpty()) {
+            throw TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.GROUP_NOT_FOUND))
+        }
+
+        var restaurantResult = mutableListOf<RestaurantResponse>()
+
+        groupRestaurantList.forEach() { groupRestaurant ->
+            val restaurant = groupRestaurant.restaurants
+            restaurantResult.add(RestaurantResponse(restaurant))
+        }
+
+        return GroupWithRestaurantResponse(
+            title = groupRestaurantList[0].groups.title,
+            restaurantList = restaurantResult
+        )
+    }
     @Transactional
     fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {

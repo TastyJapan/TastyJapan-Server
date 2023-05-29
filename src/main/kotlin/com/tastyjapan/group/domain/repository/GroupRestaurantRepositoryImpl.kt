@@ -11,4 +11,9 @@ import javax.persistence.EntityManager
 class GroupRestaurantRepositoryImpl(entityManager: EntityManager): GroupRestaurantRepositoryCustom {
     private val queryFactory: JPAQueryFactory = JPAQueryFactory(entityManager)
 
+    override fun findGroupRestaurantByGroupId(groupId: Long): List<GroupRestaurant> {
+        return queryFactory.selectFrom(groupRestaurant)
+                .where(groupRestaurant.groups.id.eq(groupId))
+                .fetch()
+    }
 }
