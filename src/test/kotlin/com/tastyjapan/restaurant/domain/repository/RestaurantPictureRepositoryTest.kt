@@ -22,6 +22,7 @@ class RestaurantPictureRepositoryTest {
     fun setUp() {
         restaurantPictureRepository.deleteAll()
         restaurantPicture = RestaurantPicture(url = "https://www.google.com")
+        restaurantPictureRepository.save(restaurantPicture)
     }
 
     @DisplayName("이미 DB에 저장되어 있는 ID를 가진 메뉴를 저장하면, 해당 ID의 메뉴는 후에 작성된 메뉴 정보로 업데이트 된다.")

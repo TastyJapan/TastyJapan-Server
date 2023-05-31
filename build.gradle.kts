@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.jvm.tasks.Jar
+import org.jetbrains.kotlin.incremental.ChangesCollector.Companion.getNonPrivateNames
 
 plugins {
     id("org.springframework.boot") version "2.7.2"
@@ -10,6 +12,7 @@ plugins {
     kotlin("kapt") version "1.7.10"
     kotlin("plugin.allopen") version "1.6.21"
     kotlin("plugin.noarg") version "1.6.21"
+    jacoco
 }
 
 group = "com"
@@ -94,6 +97,52 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        html.required.set(true)
+    }
+    val QDomains = ('A'..'Z')
+        .toMutableList()
+        .map { "**/Q$it*" }
+
+
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+                fileTree(it) {
+                    exclude(QDomains)
+                }
+            }
+        )
+    )
+    finalizedBy("jacocoTestCoverageVerification")
+}
+
+tasks.jacocoTestCoverageVerification {
+    val Qdomains = mutableListOf<String>()
+
+    for (qPattern in 'A'..'Z') {
+        Qdomains.add("*.Q${qPattern}*")
+    }
+    violationRules {
+        rule {
+            element = "CLASS"
+
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.90".toBigDecimal()
+            }
+            excludes = Qdomains
+
+        }
+    }
 }
 
 tasks.jar {
