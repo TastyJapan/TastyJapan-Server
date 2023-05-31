@@ -74,8 +74,15 @@ dependencies {
     kapt("org.mapstruct:mapstruct:${mapStructVersion}")
     kapt("org.mapstruct:mapstruct-processor:${mapStructVersion}")
 
-    // Utilities
-//    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
+    // Logback
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+
+    // String-Utils
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+
+    // Slack
+    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
+    implementation("com.github.maricn:logback-slack-appender:1.6.1")
 }
 
 tasks.withType<KotlinCompile> {

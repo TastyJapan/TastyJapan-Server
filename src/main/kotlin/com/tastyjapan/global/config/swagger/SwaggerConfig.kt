@@ -39,7 +39,7 @@ class SwaggerConfig {
         .apis(RequestHandlerSelectors.basePackage("com.tastyjapan"))
         .paths(PathSelectors.ant("/**"))
         .build();
-    
+
 
     private fun apiInfo() = ApiInfoBuilder()
         .title("TastyJapan Rest API Documentation")
