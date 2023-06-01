@@ -54,8 +54,8 @@ logging:
             sql:
               BasicBinder: TRACE
   slack:
-    webhook-uri-dev-paid: https://hooks.slack.com/services/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
-    webhook-uri-dev-error: https://hooks.slack.com/services/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
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
   config: classpath:logback-spring.xml
 dataloader:
   enable: true
