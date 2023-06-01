@@ -44,8 +44,6 @@ class RestaurantControllerTest {
     @MockkBean
     private lateinit var restaurantService: RestaurantService
 
-    @Autowired
-    private lateinit var restaurantController: RestaurantController
     @BeforeEach
     fun setup() {
         MockKAnnotations.init(this)

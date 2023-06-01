@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.jvm.tasks.Jar
+import org.jetbrains.kotlin.incremental.ChangesCollector.Companion.getNonPrivateNames
 
 plugins {
     id("org.springframework.boot") version "2.7.2"
@@ -10,6 +12,7 @@ plugins {
     kotlin("kapt") version "1.7.10"
     kotlin("plugin.allopen") version "1.6.21"
     kotlin("plugin.noarg") version "1.6.21"
+    jacoco
 }
 
 group = "com"
@@ -32,6 +35,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // Monitoring
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-core")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -69,8 +77,15 @@ dependencies {
     kapt("org.mapstruct:mapstruct:${mapStructVersion}")
     kapt("org.mapstruct:mapstruct-processor:${mapStructVersion}")
 
-    // Utilities
-//    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
+    // Logback
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+
+    // String-Utils
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+
+    // Slack
+    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
+    implementation("com.github.maricn:logback-slack-appender:1.6.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -82,6 +97,52 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        html.required.set(true)
+    }
+    val QDomains = ('A'..'Z')
+        .toMutableList()
+        .map { "**/Q$it*" }
+
+
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+                fileTree(it) {
+                    exclude(QDomains)
+                }
+            }
+        )
+    )
+    finalizedBy("jacocoTestCoverageVerification")
+}
+
+tasks.jacocoTestCoverageVerification {
+    val Qdomains = mutableListOf<String>()
+
+    for (qPattern in 'A'..'Z') {
+        Qdomains.add("*.Q${qPattern}*")
+    }
+    violationRules {
+        rule {
+            element = "CLASS"
+
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.80".toBigDecimal()
+            }
+            excludes = Qdomains
+
+        }
+    }
 }
 
 tasks.jar {

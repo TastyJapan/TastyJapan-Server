@@ -57,7 +57,7 @@ class BlogReviewTest {
     @Test
     fun testToString() {
         val expectedString =
-            "BlogReview(id=${blogReview.id}, url='https://example.com/review', source='Food Blog', restaurant=null)"
+            "BlogReview(id=${blogReview.id}, url='https://example.com/review', source='NAVER', restaurant=null)"
         assertEquals(expectedString, blogReview.toString())
     }
 

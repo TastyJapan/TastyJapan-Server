@@ -1,32 +1,181 @@
 spring:
   profiles:
-    active: local # default
+    active: local
     group:
-      local:  # local, common profile을 그룹지어 함께 어플리케이션 구동
-        - oauth
-
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/tastyjapan;MODE=MYSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-
+      local: console-logging
+      dev: console-logging,file-sql-logging,file-info-logging,file-error-logging,slack-dev-error-logging,slack-paid-logging
+      prod: console-logging,file-sql-logging,file-info-logging,file-error-logging,slack-dev-error-logging,slack-paid-logging
+  application:
+    name: tastyjapan-backend
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   jpa:
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
-        default_batch_fetch_size: 100
-
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/tastyjapan;MODE=MYSQL
+    username: sa
+    password:
+  flyway:
+    enabled: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+jwt:
+  secret: isnt-it-just-tasty
+  expire-time: 14400000
+  admin-payload: admin-payload
 logging:
   level:
-    # Logger에 sql문이 찍힌다.
-    org.hibernate.SQL: debug
-    p6spy: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
+  config: classpath:logback-spring.xml
+dataloader:
+  enable: true
+swagger:
+  url: http://localhost:8080
+sms:
+  api-key: ${sms.api-key}
+  api-secret: ${sms.api-secret}
+  source-phone-number: ${sms.source-phone-number}
+entrance:
+  device-secret: device-secret
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: ${jpa.ddl_auto}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+jwt:
+  secret: ${jwt.secret}
+  expire-time: 14400000
+  admin-payload: ${jwt.admin_payload}
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.orm: TRACE
+    org.springframework.transaction: TRACE
+    com.zaxxer.hikari: TRACE
+    com.mysql.cj.jdbc: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
+  file:
+    path: /home/ubuntu
+  config: classpath:logback-spring.xml
+dataloader:
+  enable: ${dataloader.enable}
+swagger:
+  url: https://tastyjapan.kro.kr
+sms:
+  api-key: ${sms.api-key}
+  api-secret: ${sms.api-secret}
+  source-phone-number: ${sms.source-phone-number}
+entrance:
+  device-secret: ${entrance.device-secret}
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: ${jpa.ddl_auto}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+jwt:
+  secret: ${jwt.secret}
+  expire-time: 14400000
+  admin-payload: ${jwt.admin_payload}
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.orm: TRACE
+    org.springframework.transaction: TRACE
+    com.zaxxer.hikari: TRACE
+    com.mysql.cj.jdbc: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
+  file:
+    path: /home/ubuntu
+  config: classpath:logback-spring.xml
+dataloader:
+  enable: ${dataloader.enable}
+swagger:
+  url: https://api.tastyjapan.gourmet
+sms:
+  api-key: ${sms.api-key}
+  api-secret: ${sms.api-secret}
+  source-phone-number: ${sms.source-phone-number}
+entrance:
+  device-secret: ${entrance.device-secret}
