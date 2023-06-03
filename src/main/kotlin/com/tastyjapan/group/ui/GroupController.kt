@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/group")
+@RequestMapping("/api/v1/groups")
 class GroupController(val groupService: GroupService) {
     /**
      * 그룹을 생성합니다.w

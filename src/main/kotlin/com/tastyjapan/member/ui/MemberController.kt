@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/api/v1/users")
 class MemberController(val memberService: MemberService) {
     @GetMapping
     fun getAllUsers(): ResponseEntity<ApiResponse<List<MemberResponse>>> {

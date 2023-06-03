@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reviews")
+@RequestMapping("/api/v1/reviews")
 class ReviewController(val reviewService: ReviewService) {
 
     @PostMapping
