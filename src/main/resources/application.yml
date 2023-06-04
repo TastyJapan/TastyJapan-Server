@@ -53,10 +53,6 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
-  slack:
-    webhook-uri-dev-paid: ${slack.paid_channel_uri}
-    webhook-uri-dev-error: ${slack.error_channel_uri}
-  config: classpath:logback-spring.xml
 dataloader:
   enable: true
 swagger:
