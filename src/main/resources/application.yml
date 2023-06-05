@@ -23,6 +23,7 @@ spring:
   config:
     activate:
       on-profile: local
+    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: create
@@ -68,6 +69,7 @@ spring:
   config:
     activate:
       on-profile: dev
+    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: ${jpa.ddl_auto}
@@ -87,6 +89,12 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
 jwt:
   secret: ${jwt.secret}
   expire-time: 14400000
@@ -124,6 +132,7 @@ spring:
   config:
     activate:
       on-profile: prod
+    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: ${jpa.ddl_auto}
@@ -143,6 +152,12 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
 jwt:
   secret: ${jwt.secret}
   expire-time: 14400000

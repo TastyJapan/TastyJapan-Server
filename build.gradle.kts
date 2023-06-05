@@ -19,6 +19,8 @@ group = "com"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+extra["springCloudVersion"] = "2020.0.4"
+
 repositories {
     mavenCentral()
 }
@@ -40,6 +42,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-core")
     implementation("io.micrometer:micrometer-registry-prometheus")
+
+    // Cloud
+    implementation("io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config:2.4.2")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -86,6 +91,12 @@ dependencies {
     // Slack
     implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
     implementation("com.github.maricn:logback-slack-appender:1.6.1")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
 }
 
 tasks.withType<KotlinCompile> {
