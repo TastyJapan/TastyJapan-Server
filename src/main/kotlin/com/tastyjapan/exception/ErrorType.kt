@@ -16,6 +16,14 @@ enum class ErrorType(val errorCode: String, val message: String) {
     SERVICE_BEING_CHECKED("SERVICE-001", "서비스가 점검중입니다."),
 
     USER_NOT_FOUND("USER-001", "사용자를 찾을 수 없습니다."),
+    OAUTH_ERROR("USER-002", "OAuth 인증에 실패했습니다."),
+    OAUTH2_GOOGLE_FAIL_EXCEPTION("USER-003", "OAuth2 구글 인증에 실패했습니다."),
+    EXPIRED_REFRESH_TOKEN("USER-004", "만료된 리프레시 토큰입니다."),
+    INVALID_REFRESH_TOKEN("USER-005", "올바르지 않은 리프레시 토큰입니다."),
+
+    INVALID_JWT("JWT-001", "올바르지 않은 토큰입니다."),
+    EXPIRED_JWT("JWT-002", "만료된 토큰입니다."),
+    NULL_JWT("JWT-003", "토큰이 존재하지 않습니다."),
 
     RESTAURANT_NOT_FOUND("RESTAURANT-001", "식당을 찾을 수 없습니다."),
     INVALID_LATITUDE("RESTAURANT-002", "올바르지 않은 위도입니다."),
