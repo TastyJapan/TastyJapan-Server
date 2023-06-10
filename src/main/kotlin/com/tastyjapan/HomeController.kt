@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequiredArgsConstructor
 class HomeController {
+    @Value("\${management.metrics.tags.application}")
+    private lateinit var application_name: String
+
     @GetMapping("/")
     fun home(): String {
-        return "Hello TastyJapan!"
+        return application_name
     }
 }
