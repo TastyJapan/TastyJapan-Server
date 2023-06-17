@@ -44,6 +44,16 @@ class RestaurantController(val restaurantService: RestaurantService) {
         return ResponseEntity.ok(apiResponse)
     }
 
+    @GetMapping("/search")
+    fun searchRestaurant(
+        @RequestParam keyword: String,
+        pageable: Pageable
+    ): ResponseEntity<ApiResponse<Slice<RestaurantResponse>>> {
+        val result = restaurantService.searchRestaurants(keyword, pageable)
+        val apiResponse = ApiUtils.success(result)
+        return ResponseEntity.ok(apiResponse)
+    }
+
     @GetMapping("/{restaurant-id}/detail")
     fun getRestaurantDetail(
         @PathVariable("restaurant-id") restaurantId: Long

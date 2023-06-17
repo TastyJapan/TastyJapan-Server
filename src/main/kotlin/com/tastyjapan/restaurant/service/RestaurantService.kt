@@ -94,6 +94,11 @@ class RestaurantService(
         }
     }
 
+    fun searchRestaurants(keyword: String, pageable: Pageable): Slice<RestaurantResponse> {
+        return restaurantRepository.searchRestaurants(keyword = keyword, pageable = pageable)
+            .map { restaurant -> RestaurantResponse(restaurant) }
+    }
+
     fun getRestaurantDetail(restaurantId: Long): RestaurantDetailResponse {
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {
             TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.RESTAURANT_NOT_FOUND))

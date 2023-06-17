@@ -38,5 +38,7 @@ interface RestaurantRepositoryCustom {
     ): Slice<Restaurant>
 
     fun findRestaurantRecommend(): Restaurant
+
+    fun searchRestaurants(keyword: String, pageable: Pageable): Slice<Restaurant>
     fun checkRestaurantId(restaurantId: Long): Boolean
 }
