@@ -1,6 +1,7 @@
 package com.tastyjapan.member.ui
 
 import com.ninjasquad.springmockk.MockkBean
+import com.tastyjapan.fixture.MemberFixture
 import com.tastyjapan.global.response.ApiUtils
 import com.tastyjapan.member.service.MemberService
 import com.tastyjapan.member.ui.dto.MemberResponse
@@ -55,21 +56,18 @@ class MemberControllerTest {
         val memberService = mockk<MemberService>()
         val memberController = MemberController(memberService)
 
-        val memberId = 1L
-        val memberName = "name"
-        val email = "email"
-        val picture = "myPicture"
+        val member = MemberFixture.createMemberChoco()
         val expectedMemberList = MemberResponse(
-                id = memberId,
-                name = memberName,
-                email = email,
-                picture = picture
+                id = member.id,
+                name = member.name,
+                email = member.email,
+                picture = member.picture?:""
             )
 
         val expectedAnswer = ResponseEntity.ok(ApiUtils.success(expectedMemberList))
-        every { memberService.getMember(memberId)} returns expectedMemberList
+        every { memberService.getMember(memberId = member.id)} returns expectedMemberList
 
-        val response = memberController.getUser(memberId)
+        val response = memberController.getUser(member, member.id)
 
         assertThat(expectedAnswer.statusCode).isEqualTo(response.statusCode)
         assertThat(expectedAnswer.body?.getResponse()).isEqualTo(response.body?.getResponse())

@@ -37,15 +37,45 @@ spring:
     url: jdbc:h2:tcp://localhost/~/tastyjapan;MODE=MYSQL
     username: sa
     password:
+  OAuth2:
+    google:
+      client_id: ${oauth2.google.client-id}
+      client_secret: ${oauth2.google.client-secret}
+      url:
+        redirect: ${oauth2.google.url.redirect}
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+        login: https://accounts.google.com/o/oauth2/v2/auth
   flyway:
     enabled: false
   redis:
     host: 127.0.0.1
     port: 6379
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
+cloud:
+  aws:
+#    credentials:
+#      access-key: ${/prod/s3/credentials/accesskey}
+#      secret-key: ${/prod/s3/credentials/secretkey}
+#      instanceProfile: true
+#    s3:
+#      bucket: ${/prod/s3/bucket}
+#    region:
+#      static: ap-northeast-2
+#      auto: false
+    stack:
+      auto: false
 jwt:
-  secret: isnt-it-just-tasty
-  expire-time: 14400000
-  admin-payload: admin-payload
+  secret: isnt-it-just-tasty-123123123123122312312313
+  access-token-expiry: 1296000000 #15일
+  refresh-token-expiry: 2592000000 #1달
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
 logging:
   level:
     org:
@@ -58,10 +88,6 @@ dataloader:
   enable: true
 swagger:
   url: http://localhost:8080
-sms:
-  api-key: ${sms.api-key}
-  api-secret: ${sms.api-secret}
-  source-phone-number: ${sms.source-phone-number}
 entrance:
   device-secret: device-secret
 ---
@@ -89,16 +115,33 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+server:
+  port: ${spring.server.port}
 aws:
   paramstore:
     enabled: true
     prefix: /config
     profile-separator: _
     name: tastyjapan
+cloud:
+  aws:
+    credentials:
+      access-key: ${/prod/s3/credentials/accesskey}
+      secret-key: ${/prod/s3/credentials/secretkey}
+      instanceProfile: true
+    s3:
+      bucket: ${/prod/s3/bucket}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 jwt:
   secret: ${jwt.secret}
-  expire-time: 14400000
-  admin-payload: ${jwt.admin_payload}
+  access-token-expiry: 1296000000 #15일
+  refresh-token-expiry: 2592000000 #1달
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
 logging:
   level:
     org:
@@ -120,11 +163,7 @@ logging:
 dataloader:
   enable: ${dataloader.enable}
 swagger:
-  url: https://tastyjapan.kro.kr
-sms:
-  api-key: ${sms.api-key}
-  api-secret: ${sms.api-secret}
-  source-phone-number: ${sms.source-phone-number}
+  url: https://tastyjapan.co.kr
 entrance:
   device-secret: ${entrance.device-secret}
 ---
@@ -152,16 +191,33 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+server:
+  port: ${spring.server.port}
 aws:
   paramstore:
     enabled: true
     prefix: /config
     profile-separator: _
     name: tastyjapan
+cloud:
+  aws:
+    credentials:
+      access-key: ${/prod/s3/credentials/accesskey}
+      secret-key: ${/prod/s3/credentials/secretkey}
+      instanceProfile: true
+    s3:
+      bucket: ${/prod/s3/bucket}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 jwt:
   secret: ${jwt.secret}
-  expire-time: 14400000
-  admin-payload: ${jwt.admin_payload}
+  access-token-expiry: 1296000000 #15일
+  refresh-token-expiry: 2592000000 #1달
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
 logging:
   level:
     org:
@@ -184,9 +240,5 @@ dataloader:
   enable: ${dataloader.enable}
 swagger:
   url: https://api.tastyjapan.gourmet
-sms:
-  api-key: ${sms.api-key}
-  api-secret: ${sms.api-secret}
-  source-phone-number: ${sms.source-phone-number}
 entrance:
   device-secret: ${entrance.device-secret}

@@ -24,10 +24,15 @@ class Member(
     val email: String,
 
     @Column(name = "member_picture")
-    val picture: String,
+    val picture: String? = null,
 
     @Enumerated(EnumType.STRING)
     val role: Role,
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    var status: EntityStatus = EntityStatus.ACTIVE
+
 ) : BaseEntity(), CustomObject {
     /**
      * 연관 관계 메서드
@@ -62,4 +67,7 @@ class Member(
         review.member = this
     }
 
+    fun softDelete() {
+        this.status = EntityStatus.INACTIVE
+    }
 }

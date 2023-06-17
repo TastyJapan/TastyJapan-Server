@@ -1,7 +1,9 @@
 package com.tastyjapan.review.ui
 
+import com.tastyjapan.global.annotation.CurrentMember
 import com.tastyjapan.global.response.ApiResponse
 import com.tastyjapan.global.response.ApiUtils
+import com.tastyjapan.member.domain.Member
 import com.tastyjapan.review.service.ReviewService
 import com.tastyjapan.review.ui.dto.BlogReviewResponse
 import com.tastyjapan.review.ui.dto.ReviewRequest
@@ -41,11 +43,11 @@ class ReviewController(val reviewService: ReviewService) {
         return ResponseEntity.ok(apiResponse)
     }
 
-    @GetMapping("/users/{user-id}")
+    @GetMapping("/")
     fun getUserReviews(
-        @PathVariable("user-id") userId: Long
+        @CurrentMember member: Member,
     ): ResponseEntity<ApiResponse<List<UserReviewResponse>>> {
-        val result = reviewService.getReviewByUserId(userId)
+        val result = reviewService.getReviewByUserId(member.id)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }

@@ -1,7 +1,9 @@
 package com.tastyjapan.member.ui
 
+import com.tastyjapan.global.annotation.CurrentMember
 import com.tastyjapan.global.response.ApiResponse
 import com.tastyjapan.global.response.ApiUtils
+import com.tastyjapan.member.domain.Member
 import com.tastyjapan.member.service.MemberService
 import com.tastyjapan.member.ui.dto.MemberResponse
 import lombok.RequiredArgsConstructor
@@ -22,10 +24,15 @@ class MemberController(val memberService: MemberService) {
         return ResponseEntity.ok(apiResponse)
     }
 
-    @GetMapping("/{user-id}")
-    fun getUser(@PathVariable("user-id") userId: Long): ResponseEntity<ApiResponse<MemberResponse>> {
-        val member = memberService.getMember(userId)
-        val apiResponse = ApiUtils.success(member)
+    @GetMapping("/{user-id}", "/")
+    fun getUser(
+        @CurrentMember member: Member,
+        @PathVariable(required = false, name = "user-id") userId: Long?
+    ): ResponseEntity<ApiResponse<MemberResponse>> {
+        val memberResponse = userId?.let {
+            memberService.getMember(userId)
+        } ?: memberService.getMember(member.id)
+        val apiResponse = ApiUtils.success(memberResponse)
         return ResponseEntity.ok(apiResponse)
     }
 

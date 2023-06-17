@@ -1,3 +1,4 @@
+import com.tastyjapan.fixture.MemberFixture
 import com.tastyjapan.fixture.MemberFixture.createMemberChoco
 import com.tastyjapan.global.response.ApiUtils
 import com.tastyjapan.member.mapper.MemberMapper
@@ -85,7 +86,7 @@ class ReviewControllerTest {
     fun getUserReviews() {
         val reviewService = mockk<ReviewService>()
         val reviewController = ReviewController(reviewService)
-        val userId = 123L
+        val member = MemberFixture.createMemberChoco()
 
         val expectedUserReviewsResponse = listOf(
             UserReviewResponse(rating = 4.0, content = "Good food"),
@@ -94,10 +95,10 @@ class ReviewControllerTest {
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedUserReviewsResponse))
 
         every {
-            reviewService.getReviewByUserId(userId)
+            reviewService.getReviewByUserId(member.id)
         } returns expectedUserReviewsResponse
 
-        val response = reviewController.getUserReviews(userId)
+        val response = reviewController.getUserReviews(member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
