@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/menus")
+@RequestMapping("/api/v1/menus")
 class MenuController (val menuService: MenuService) {
 
     @GetMapping("/restaurants/{restaurant-id}")

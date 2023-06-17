@@ -1,6 +1,7 @@
 package com.tastyjapan.member.domain.repository
 
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.tastyjapan.member.domain.Member
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
 import com.tastyjapan.member.domain.QMember.member
@@ -15,4 +16,11 @@ class MemberRepositoryImpl(entityManager: EntityManager) : MemberRepositoryCusto
             .where(member.id.eq(memberId).and(member.isDeleted.isFalse))
             .fetchFirst() != null
     }
+
+    override fun findByEmail(email: String): Member? {
+        return queryFactory.selectFrom(member)
+            .where(member.email.eq(email).and(member.isDeleted.isFalse))
+            .fetchOne()
+    }
+
 }

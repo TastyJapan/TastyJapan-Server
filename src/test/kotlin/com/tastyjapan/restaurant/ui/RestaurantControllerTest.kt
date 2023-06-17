@@ -80,7 +80,7 @@ class RestaurantControllerTest {
         } returns slice
 
         // When & Then
-        mockMvc.get("/restaurants") {
+        mockMvc.get("/api/v1/restaurants") {
             contentType = MediaType.APPLICATION_JSON
             param("city", city)
             param("menu", menu)
@@ -119,7 +119,7 @@ class RestaurantControllerTest {
         every { restaurantService.getRestaurantDetail(restaurantDetailResponse.id) } returns restaurantDetailResponse
 
         // When & Then
-        mockMvc.get("/restaurants/${restaurantDetailResponse.id}/detail") {
+        mockMvc.get("/api/v1/restaurants/${restaurantDetailResponse.id}/detail") {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             status().isOk

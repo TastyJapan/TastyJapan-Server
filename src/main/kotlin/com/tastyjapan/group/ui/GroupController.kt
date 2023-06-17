@@ -1,5 +1,6 @@
 package com.tastyjapan.group.ui
 
+import com.tastyjapan.global.annotation.CurrentMember
 import com.tastyjapan.global.response.ApiResponse
 import com.tastyjapan.global.response.ApiUtils
 import com.tastyjapan.group.service.GroupService
@@ -7,6 +8,7 @@ import com.tastyjapan.group.ui.dto.GroupRequest
 import com.tastyjapan.group.ui.dto.GroupRestaurantsUpdateRequest
 import com.tastyjapan.group.ui.dto.GroupWithRestaurantResponse
 import com.tastyjapan.group.ui.dto.GroupsResponse
+import com.tastyjapan.member.domain.Member
 import io.swagger.annotations.ApiOperation
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
@@ -14,16 +16,16 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/group")
+@RequestMapping("/api/v1/groups")
 class GroupController(val groupService: GroupService) {
     /**
-     * 그룹을 생성합니다.w
+     * 그룹을 생성합니다.
      */
-    @PostMapping("/user/{user-id}")
+    @PostMapping("/")
     fun createGroup(
-        @PathVariable("user-id") userId: Long, @RequestBody groupRequest: GroupRequest
+        @CurrentMember member: Member, @RequestBody groupRequest: GroupRequest
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = groupService.createGroup(userId, groupRequest)
+        val result = groupService.createGroup(member.id, groupRequest)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
@@ -44,9 +46,9 @@ class GroupController(val groupService: GroupService) {
     /**
      * 그룹들을 반환합니다.
      */
-    @GetMapping("/{user-id}")
-    fun getGroups(@PathVariable("user-id") userId: Long): ResponseEntity<ApiResponse<List<GroupsResponse>>> {
-        val result = groupService.getGroups(userId)
+    @GetMapping("/")
+    fun getGroups(@CurrentMember member: Member): ResponseEntity<ApiResponse<List<GroupsResponse>>> {
+        val result = groupService.getGroups(member.id)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }

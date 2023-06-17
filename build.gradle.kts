@@ -19,6 +19,8 @@ group = "com"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+extra["springCloudVersion"] = "2020.0.4"
+
 repositories {
     mavenCentral()
 }
@@ -41,13 +43,14 @@ dependencies {
     implementation("io.micrometer:micrometer-core")
     implementation("io.micrometer:micrometer-registry-prometheus")
 
+    // Cloud
+    implementation("io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config:2.4.2")
+
     // Testing
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(module = "mockito-core")
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("com.ninja-squad:springmockk:4.0.0")
+    testImplementation("com.ninja-squad:springmockk:3.1.1")
 
     // P6SY
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6")
@@ -66,6 +69,15 @@ dependencies {
     // Querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+
+    // Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.20")
@@ -86,6 +98,16 @@ dependencies {
     // Slack
     implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
     implementation("com.github.maricn:logback-slack-appender:1.6.1")
+
+    // Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
 }
 
 tasks.withType<KotlinCompile> {

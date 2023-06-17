@@ -1,5 +1,7 @@
 package com.tastyjapan.group.ui
 
+import com.tastyjapan.ApiControllerTest
+import com.tastyjapan.fixture.MemberFixture.createMemberChoco
 import com.tastyjapan.fixture.RestaurantFixture.createRestaurantRamen
 import com.tastyjapan.global.response.ApiUtils
 import com.tastyjapan.group.service.GroupService
@@ -7,6 +9,7 @@ import com.tastyjapan.group.ui.dto.GroupRequest
 import com.tastyjapan.group.ui.dto.GroupRestaurantsUpdateRequest
 import com.tastyjapan.group.ui.dto.GroupWithRestaurantResponse
 import com.tastyjapan.group.ui.dto.GroupsResponse
+import com.tastyjapan.member.domain.Member
 import com.tastyjapan.restaurant.ui.dto.RestaurantResponse
 import io.mockk.every
 import io.mockk.mockk
@@ -22,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
-class GroupControllerTest {
+class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
 
     @Test
     fun createGroup() {
@@ -32,7 +35,7 @@ class GroupControllerTest {
         val groupController = GroupController(groupService)
 
         // Define the input parameters for the createGroup endpoint
-        val userId = 123L
+        val member = createMemberChoco()
         val groupRequest = GroupRequest(title = "My Group", restaurantList = listOf(createRestaurantRamen().id))
 
         // Define the expected response
@@ -41,11 +44,11 @@ class GroupControllerTest {
 
         // Mock the behavior of the GroupService's createGroup method
         every {
-            groupService.createGroup(userId, groupRequest)
+            groupService.createGroup(member.id, groupRequest)
         } returns expectedGroupId
 
         // Call the createGroup endpoint
-        val response = groupController.createGroup(userId, groupRequest)
+        val response = groupController.createGroup(member, groupRequest)
 
         // Verify the response
         assertEquals(expectedResponse.statusCode, response.statusCode)
@@ -56,7 +59,7 @@ class GroupControllerTest {
     fun getGroups() {
         val groupService = mockk<GroupService>()
         val groupController = GroupController(groupService)
-        val userId = 123L
+        val member = createMemberChoco()
 
         val expectedGroupsResponse = listOf(
             GroupsResponse(id = 1L, title = "Group 1"),
@@ -65,10 +68,10 @@ class GroupControllerTest {
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedGroupsResponse))
 
         every {
-            groupService.getGroups(userId)
+            groupService.getGroups(member.id)
         } returns expectedGroupsResponse
 
-        val response = groupController.getGroups(userId)
+        val response = groupController.getGroups(member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
