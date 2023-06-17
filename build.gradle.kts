@@ -98,6 +98,10 @@ dependencies {
     // Slack
     implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
     implementation("com.github.maricn:logback-slack-appender:1.6.1")
+
+    // Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 }
 
 dependencyManagement {
