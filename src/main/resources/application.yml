@@ -59,21 +59,12 @@ aws:
     name: tastyjapan
 cloud:
   aws:
-#    credentials:
-#      access-key: ${/prod/s3/credentials/accesskey}
-#      secret-key: ${/prod/s3/credentials/secretkey}
-#      instanceProfile: true
-#    s3:
-#      bucket: ${/prod/s3/bucket}
-#    region:
-#      static: ap-northeast-2
-#      auto: false
     stack:
       auto: false
 jwt:
   secret: isnt-it-just-tasty-123123123123122312312313
-  access-token-expiry: 1296000000 #15일
-  refresh-token-expiry: 2592000000 #1달
+  access-token-expiry: 1296000000
+  refresh-token-expiry: 2592000000
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
 logging:
@@ -84,12 +75,8 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
-dataloader:
-  enable: true
 swagger:
   url: http://localhost:8080
-entrance:
-  device-secret: device-secret
 ---
 spring:
   config:
@@ -125,21 +112,12 @@ aws:
     name: tastyjapan
 cloud:
   aws:
-    credentials:
-      access-key: ${/prod/s3/credentials/accesskey}
-      secret-key: ${/prod/s3/credentials/secretkey}
-      instanceProfile: true
-    s3:
-      bucket: ${/prod/s3/bucket}
-    region:
-      static: ap-northeast-2
-      auto: false
     stack:
       auto: false
 jwt:
   secret: ${jwt.secret}
-  access-token-expiry: 1296000000 #15일
-  refresh-token-expiry: 2592000000 #1달
+  access-token-expiry: ${jwt.access.expire}
+  refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
 logging:
@@ -160,12 +138,8 @@ logging:
   file:
     path: /home/ubuntu
   config: classpath:logback-spring.xml
-dataloader:
-  enable: ${dataloader.enable}
 swagger:
   url: https://tastyjapan.co.kr
-entrance:
-  device-secret: ${entrance.device-secret}
 ---
 spring:
   config:
@@ -201,21 +175,12 @@ aws:
     name: tastyjapan
 cloud:
   aws:
-    credentials:
-      access-key: ${/prod/s3/credentials/accesskey}
-      secret-key: ${/prod/s3/credentials/secretkey}
-      instanceProfile: true
-    s3:
-      bucket: ${/prod/s3/bucket}
-    region:
-      static: ap-northeast-2
-      auto: false
     stack:
       auto: false
 jwt:
   secret: ${jwt.secret}
-  access-token-expiry: 1296000000 #15일
-  refresh-token-expiry: 2592000000 #1달
+  access-token-expiry: ${jwt.access.expire}
+  refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
 logging:
@@ -236,9 +201,5 @@ logging:
   file:
     path: /home/ubuntu
   config: classpath:logback-spring.xml
-dataloader:
-  enable: ${dataloader.enable}
 swagger:
   url: https://api.tastyjapan.gourmet
-entrance:
-  device-secret: ${entrance.device-secret}

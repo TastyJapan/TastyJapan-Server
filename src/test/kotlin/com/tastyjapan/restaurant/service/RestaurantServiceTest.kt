@@ -107,6 +107,20 @@ class RestaurantServiceTest {
     }
 
     @Test
+    fun searchRestaurantsTest() {
+        // Given
+        val keyword: String = "하루코마"
+        val pageable: Pageable = PageRequest.of(0, 10)
+
+        // When
+        val result = restaurantService.searchRestaurants(keyword=keyword, pageable=pageable)
+
+        // Then
+        assertEquals(1, result.numberOfElements)
+
+    }
+
+    @Test
     fun getRestaurantDetail() {
         // Given
         val restaurantId = restaurant1.id

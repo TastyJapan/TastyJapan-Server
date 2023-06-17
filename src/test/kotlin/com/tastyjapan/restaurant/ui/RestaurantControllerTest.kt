@@ -60,9 +60,10 @@ class RestaurantControllerTest {
         val latMin = createRestaurantRamen().latitude - 0.1
         val longMax = createRestaurantRamen().longitude + 0.1
         val longMin = createRestaurantRamen().longitude - 0.1
+        val keyword = "tasty"
         val pageable = PageRequest.of(0, 10)
     }
-
+    @DisplayName("식당 검색에 성공한다.")
     @Test
     fun `Test getRestaurants endpoint`() {
         // Given
@@ -104,6 +105,39 @@ class RestaurantControllerTest {
                     longMin = longMin,
                     latMax = latMax,
                     latMin = latMin,
+                    pageable = pageable
+                )
+            }
+        }
+    }
+
+    @DisplayName("키워드로 식당 검색에 성공한다.")
+    @Test
+    fun searchRestaurantsTest() {
+        // Given
+        val slice: Slice<RestaurantResponse> = SliceImpl(listOf(restaurantResponse), pageable, false)
+        every {
+            restaurantService.searchRestaurants(
+                keyword = keyword,
+                pageable = pageable
+            )
+        } returns slice
+
+        // When & Then
+        mockMvc.get("/api/v1/restaurants/search") {
+            contentType = MediaType.APPLICATION_JSON
+            param("keyword", keyword)
+            param("page", "0")
+            param("size", "10")
+        }.andExpect {
+            status().isOk
+        }.andExpect {
+            jsonPath("\$.success") { value(true) }
+            jsonPath("\$.response.content[0].id") { value(restaurantResponse.id) }
+        }.andDo {
+            verify {
+                restaurantService.searchRestaurants(
+                    keyword = keyword,
                     pageable = pageable
                 )
             }

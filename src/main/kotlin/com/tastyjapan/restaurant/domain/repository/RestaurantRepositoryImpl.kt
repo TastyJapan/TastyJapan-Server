@@ -126,6 +126,17 @@ class RestaurantRepositoryImpl(private val entityManager: EntityManager) : Resta
         return SliceImpl(content, pageRequest, hasNext)
     }
 
+    override fun searchRestaurants(keyword: String, pageable: Pageable): Slice<Restaurant> {
+        val query = queryFactory
+            .selectFrom(restaurant)
+            .where(restaurant.name.containsIgnoreCase(keyword))
+
+        val content = query.fetch()
+        val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
+
+        return SliceImpl(content, pageRequest, false)
+    }
+
     override fun findRestaurantRecommend(): Restaurant {
         val sumReviews = restaurant.reviews.size()
         val sumExternalReviews = restaurant.externalReviews.size()
