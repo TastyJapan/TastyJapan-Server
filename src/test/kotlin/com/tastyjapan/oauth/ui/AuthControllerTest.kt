@@ -30,34 +30,6 @@ class AuthControllerTest : ApiControllerTest(uri = "/api/v1/auth") {
 
     private val jwtTokens = JwtTokens("access-token", "refresh-token")
 
-    @Test
-    fun `회원가입`() {
-        val signUpRequest = SignUpRequest("leah", "https://example.com/leah.jpg")
-
-        `when`(authService.signup("token", signUpRequest)).thenReturn(jwtTokens)
-
-        val uri = "$uri/signup"
-        mockMvc.perform(
-            RestDocumentationRequestBuilders.post(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(ObjectMapper().writeValueAsString(signUpRequest))
-                .header("auth-token", "token")
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
-            .andDo(MockMvcResultHandlers.print())
-            .andDo(
-                MockMvcRestDocumentation.document(
-                    "signup",
-                    Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
-                    Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                    PayloadDocumentation.responseFields(
-                        PayloadDocumentation.beneathPath("response").withSubsectionId("response"),
-                        *jwtTokensPreviewDataResponseFieldsSnippet(),
-                    )
-                )
-            )
-    }
 
     @Test
     fun `기가입자가 아닌 경우 로그인`() {

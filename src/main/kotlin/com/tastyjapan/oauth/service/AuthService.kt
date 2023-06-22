@@ -36,7 +36,7 @@ class AuthService(
 
         val isExist = memberRepository.existsByEmail(email)
         if (!isExist) {
-            return SignInResponse(false, JwtTokens(accessToken = token))
+            return SignInResponse(true, signup(token = token))
         }
 
         val tokens = jwtService.issue(email)
@@ -45,12 +45,13 @@ class AuthService(
     }
 
     @Transactional
-    fun signup(token: String, signUpRequest: SignUpRequest): JwtTokens {
-        val email = oAuthService.getUserEmail(token)
-        join(email, signUpRequest)
+    fun signup(token: String): JwtTokens {
+        val userInfo = oAuthService.getUserInfo(token)
 
-        val tokens = jwtService.issue(email)
-        storeRefresh(tokens, email)
+        join(userInfo.email, SignUpRequest(nickname = userInfo.name, picture = userInfo.picture))
+
+        val tokens = jwtService.issue(userInfo.email)
+        storeRefresh(tokens, userInfo.email)
         return tokens
     }
 
