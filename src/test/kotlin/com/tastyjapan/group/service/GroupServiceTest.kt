@@ -68,7 +68,7 @@ class GroupServiceTest {
         val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id, restaurant2.id))
 
         // when
-        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest, member = member)
 
         // then
         assertThat(groupRepository.findAll().get(0).id).isEqualTo(groupId)
@@ -79,7 +79,7 @@ class GroupServiceTest {
     fun getGroups() {
         // given
         val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id))
-        groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+        groupService.createGroup(memberId = member.id, groupRequest = groupRequest, member = member)
 
         // when
         val groups = groupService.getGroups(memberId = member.id)
@@ -94,7 +94,7 @@ class GroupServiceTest {
     fun getGroupRestaurants() {
         // given
         val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id, restaurant2.id))
-        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest, member = member)
 
         // when
         val groupRestaurants = groupService.getGroupRestaurants(groupId = groupId)
@@ -111,7 +111,7 @@ class GroupServiceTest {
         groupRepository.save(groups)
 
         // when
-        groupService.updateGroupTitle(groupId = groups.id, title = "My Restaurant 2")
+        groupService.updateGroupTitle(groupId = groups.id, title = "My Restaurant 2", member = member)
 
         // then
         assertThat(groupRepository.findById(groups.id).get().title).isEqualTo("My Restaurant 2")
@@ -122,13 +122,14 @@ class GroupServiceTest {
     fun updateGroupRestaurants() {
         // given
         val groupRequest = GroupRequest(title = "테스트 그룹", restaurantList = listOf(restaurant1.id))
-        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest)
+        val groupId = groupService.createGroup(memberId = member.id, groupRequest = groupRequest, member = member)
 
         // when
         val groupRestaurantsUpdateRequest = GroupRestaurantsUpdateRequest(restaurantList = listOf(restaurant2.id))
         val result = groupService.updateGroupRestaurants(
             groupId = groupId,
-            groupRestaurantsUpdateRequest = groupRestaurantsUpdateRequest
+            groupRestaurantsUpdateRequest = groupRestaurantsUpdateRequest,
+            member = member
         )
 
         // then
@@ -148,7 +149,7 @@ class GroupServiceTest {
         groupRepository.save(groups)
 
         // when
-        groupService.deleteGroup(groupId = groups.id)
+        groupService.deleteGroup(groupId = groups.id, member = member)
 
         // then
         assertThat(groupRepository.findAll().size).isEqualTo(0)
@@ -163,7 +164,7 @@ class GroupServiceTest {
 
 
         // when
-        groupService.addOneRestaurant(groupId = groups.id, restaurantId = restaurant1.id)
+        groupService.addOneRestaurant(groupId = groups.id, restaurantId = restaurant1.id, member = member)
 
         // then
         assertThat(groupRestaurantRepository.findGroupRestaurantByGroupId(groupId = groups.id).size).isEqualTo(1)

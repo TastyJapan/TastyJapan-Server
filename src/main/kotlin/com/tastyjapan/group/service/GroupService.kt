@@ -13,6 +13,7 @@ import com.tastyjapan.group.ui.dto.GroupRequest
 import com.tastyjapan.group.ui.dto.GroupRestaurantsUpdateRequest
 import com.tastyjapan.group.ui.dto.GroupWithRestaurantResponse
 import com.tastyjapan.group.ui.dto.GroupsResponse
+import com.tastyjapan.member.domain.Member
 import com.tastyjapan.member.domain.repository.MemberRepository
 import com.tastyjapan.restaurant.domain.repository.RestaurantRepository
 import com.tastyjapan.restaurant.ui.dto.RestaurantResponse
@@ -38,12 +39,9 @@ class GroupService(
     val invalidArgumentException: InvalidArgumentException
 ) {
     @Transactional
-    fun createGroup(memberId: Long, groupRequest: GroupRequest): Long {
+    fun createGroup(memberId: Long, groupRequest: GroupRequest, member: Member): Long {
         // member 존재 여부 체크
-        val member = memberRepository.findById(memberId).orElseThrow {
-            TastyJapanException(HttpStatus.BAD_REQUEST, ExceptionResponse(ErrorType.USER_NOT_FOUND))
-        }
-
+        invalidArgumentException.checkMemberId(memberId = memberId, member = member)
         // group count 체크
         countGroupCount(memberId)
 
@@ -76,7 +74,6 @@ class GroupService(
     }
 
     fun getGroups(memberId: Long): List<GroupsResponse> {
-        invalidArgumentException.checkMemberId(memberId)
         return groupRepository.findGroupsByMemberId(memberId).stream()
             .map { group -> GroupMapper.INSTANCE.groupEntityToResponse(group) }
             .collect(Collectors.toList())
@@ -102,12 +99,18 @@ class GroupService(
     }
 
     @Transactional
-    fun updateGroupTitle(groupId: Long, title: String): Long {
+    fun updateGroupTitle(groupId: Long, title: String, member: Member): Long {
+        invalidArgumentException.checkGroup(groupId = groupId, member = member)
         return groupRepository.updateGroupTitle(groupId, title)
     }
 
     @Transactional
-    fun updateGroupRestaurants(groupId: Long, groupRestaurantsUpdateRequest: GroupRestaurantsUpdateRequest): Long {
+    fun updateGroupRestaurants(
+        groupId: Long,
+        groupRestaurantsUpdateRequest: GroupRestaurantsUpdateRequest,
+        member: Member
+    ): Long {
+        invalidArgumentException.checkGroup(groupId = groupId, member = member)
         countRestaurantCount(groupRestaurantsUpdateRequest.restaurantList)
 
         // 1. Group 조회
@@ -151,8 +154,8 @@ class GroupService(
     }
 
     @Transactional
-    fun deleteGroup(groupId: Long): Boolean {
-
+    fun deleteGroup(groupId: Long, member: Member): Boolean {
+        invalidArgumentException.checkGroup(groupId = groupId, member = member)
         groupRestaurantRepository.findGroupRestaurantByGroupId(groupId).forEach { groupRestaurant ->
             //  Restaurant에서 GroupRestaurant 제거
             val restaurant = groupRestaurant.restaurants
@@ -168,7 +171,8 @@ class GroupService(
     }
 
     @Transactional
-    fun addOneRestaurant(groupId: Long, restaurantId: Long): Long {
+    fun addOneRestaurant(groupId: Long, restaurantId: Long, member: Member): Long {
+        invalidArgumentException.checkGroup(groupId = groupId, member = member)
         val restaurant = restaurantRepository.findById(restaurantId).orElseThrow {
             TastyJapanException(
                 HttpStatus.BAD_REQUEST,

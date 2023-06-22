@@ -25,7 +25,7 @@ class GroupController(val groupService: GroupService) {
     fun createGroup(
         @CurrentMember member: Member, @RequestBody groupRequest: GroupRequest
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = groupService.createGroup(member.id, groupRequest)
+        val result = groupService.createGroup(member.id, groupRequest, member = member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
@@ -35,10 +35,11 @@ class GroupController(val groupService: GroupService) {
      */
     @PostMapping("/{group-id}/restaurants/{restaurant-id}")
     fun addOneRestaurant(
+        @CurrentMember member: Member,
         @PathVariable("group-id") groupId: Long,
         @PathVariable("restaurant-id") restaurantId: Long
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = groupService.addOneRestaurant(groupId, restaurantId)
+        val result = groupService.addOneRestaurant(groupId, restaurantId, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
@@ -69,9 +70,10 @@ class GroupController(val groupService: GroupService) {
      */
     @PutMapping("/{group-id}/title")
     fun updateGroupTitle(
+        @CurrentMember member: Member,
         @PathVariable("group-id") groupId: Long, @RequestBody title: String
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = groupService.updateGroupTitle(groupId, title)
+        val result = groupService.updateGroupTitle(groupId, title, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
@@ -81,10 +83,11 @@ class GroupController(val groupService: GroupService) {
      */
     @PutMapping("/{group-id}/restaurants")
     fun updateGroupRestaurants(
+        @CurrentMember member: Member,
         @PathVariable("group-id") groupId: Long,
         @RequestBody groupRestaurantsUpdateRequest: GroupRestaurantsUpdateRequest
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = groupService.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest)
+        val result = groupService.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
@@ -93,8 +96,11 @@ class GroupController(val groupService: GroupService) {
      * 그룹을 삭제합니다.
      */
     @DeleteMapping("/{group-id}")
-    fun deleteGroup(@PathVariable("group-id") groupId: Long): ResponseEntity<ApiResponse<Boolean>> {
-        val result = groupService.deleteGroup(groupId)
+    fun deleteGroup(
+        @CurrentMember member: Member,
+        @PathVariable("group-id") groupId: Long
+    ): ResponseEntity<ApiResponse<Boolean>> {
+        val result = groupService.deleteGroup(groupId, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }

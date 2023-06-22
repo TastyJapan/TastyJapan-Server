@@ -21,11 +21,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import kotlin.time.measureTimedValue
 
 @SpringBootTest
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
-class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
+class GroupControllerTest : ApiControllerTest(uri = "/api/v1/groups") {
 
     @Test
     fun createGroup() {
@@ -44,7 +45,7 @@ class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
 
         // Mock the behavior of the GroupService's createGroup method
         every {
-            groupService.createGroup(member.id, groupRequest)
+            groupService.createGroup(member.id, groupRequest, member)
         } returns expectedGroupId
 
         // Call the createGroup endpoint
@@ -107,15 +108,16 @@ class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
         val groupController = GroupController(groupService)
         val groupId = 123L
         val newTitle = "Updated Group Title"
+        val member = createMemberChoco()
 
         val expectedUpdatedGroupId = 123L
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedUpdatedGroupId))
 
         every {
-            groupService.updateGroupTitle(groupId, newTitle)
+            groupService.updateGroupTitle(groupId, newTitle, member)
         } returns expectedUpdatedGroupId
 
-        val response = groupController.updateGroupTitle(groupId, newTitle)
+        val response = groupController.updateGroupTitle(groupId = groupId, title = newTitle, member = member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
@@ -127,15 +129,20 @@ class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
         val groupController = GroupController(groupService)
         val groupId = 123L
         val groupRestaurantsUpdateRequest = GroupRestaurantsUpdateRequest(restaurantList = listOf(1L, 2L, 3L))
+        val member = createMemberChoco()
 
         val expectedUpdatedGroupId = 123L
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedUpdatedGroupId))
 
         every {
-            groupService.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest)
+            groupService.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest, member)
         } returns expectedUpdatedGroupId
 
-        val response = groupController.updateGroupRestaurants(groupId, groupRestaurantsUpdateRequest)
+        val response = groupController.updateGroupRestaurants(
+            groupId = groupId,
+            groupRestaurantsUpdateRequest = groupRestaurantsUpdateRequest,
+            member = member
+        )
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
@@ -146,33 +153,34 @@ class GroupControllerTest: ApiControllerTest(uri = "/api/v1/groups")  {
         val groupService = mockk<GroupService>()
         val groupController = GroupController(groupService)
         val groupId = 123L
+        val member = createMemberChoco()
 
         val expectedDeleted = true
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedDeleted))
 
         every {
-            groupService.deleteGroup(groupId)
+            groupService.deleteGroup(groupId, member)
         } returns expectedDeleted
 
-        val response = groupController.deleteGroup(groupId)
+        val response = groupController.deleteGroup(groupId = groupId, member = member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
     }
 
     @Test
-    fun addOneRestaurant(){
+    fun addOneRestaurant() {
         val groupService = mockk<GroupService>()
         val groupController = GroupController(groupService)
         val groupId = 123L
         val restaurantId = 456L
-
+        val member = createMemberChoco()
         val expectedAdd = 123L
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedAdd))
 
-        every { groupService.addOneRestaurant(groupId,restaurantId ) }returns expectedAdd
+        every { groupService.addOneRestaurant(groupId, restaurantId, member) } returns expectedAdd
 
-        val response = groupController.addOneRestaurant(groupId, restaurantId)
+        val response = groupController.addOneRestaurant(groupId = groupId, restaurantId = restaurantId, member = member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())

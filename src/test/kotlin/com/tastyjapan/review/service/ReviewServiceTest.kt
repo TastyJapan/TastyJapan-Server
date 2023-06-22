@@ -143,7 +143,7 @@ class ReviewServiceTest {
         )
 
         // when
-        val reviewId = reviewService.updateReview(review.id, reviewRequest)
+        val reviewId = reviewService.updateReview(review.id, reviewRequest, member)
 
         // then
         assertThat(reviewRepository.findAll().size).isEqualTo(1)
@@ -160,7 +160,7 @@ class ReviewServiceTest {
         reviewRepository.save(review)
 
         // when
-        reviewService.deleteReview(review.id)
+        reviewService.deleteReview(review.id, member)
 
         // then
         assertThat(reviewRepository.findReviewByMemberId(memberId = member.id).size).isEqualTo(0)

@@ -54,19 +54,21 @@ class ReviewController(val reviewService: ReviewService) {
 
     @PutMapping("/{review-id}")
     fun updateReview(
+        @CurrentMember member: Member,
         @PathVariable("review-id") reviewId: Long,
         @RequestBody reviewRequest: ReviewRequest
     ): ResponseEntity<ApiResponse<Long>> {
-        val result = reviewService.updateReview(reviewId, reviewRequest)
+        val result = reviewService.updateReview(reviewId, reviewRequest, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
 
     @DeleteMapping("/{review-id}")
     fun deleteReview(
+        @CurrentMember member: Member,
         @PathVariable("review-id") reviewId: Long
     ): ResponseEntity<ApiResponse<Boolean>> {
-        val result = reviewService.deleteReview(reviewId)
+        val result = reviewService.deleteReview(reviewId, member)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }
