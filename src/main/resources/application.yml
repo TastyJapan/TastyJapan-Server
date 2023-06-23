@@ -1,32 +1,205 @@
 spring:
   profiles:
-    active: local # default
+    active: local
     group:
-      local:  # local, common profile을 그룹지어 함께 어플리케이션 구동
-        - oauth
-
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/tastyjapan;MODE=MYSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-
+      local: console-logging
+      dev: console-logging,file-sql-logging,file-info-logging,file-error-logging,slack-dev-error-logging,slack-paid-logging
+      prod: console-logging,file-sql-logging,file-info-logging,file-error-logging,slack-dev-error-logging,slack-paid-logging
+  application:
+    name: tastyjapan-backend
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: 'aws-parameterstore:'
   jpa:
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
-        default_batch_fetch_size: 100
-
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/tastyjapan;MODE=MYSQL
+    username: sa
+    password:
+  OAuth2:
+    google:
+      client_id: ${oauth2.google.client-id}
+      client_secret: ${oauth2.google.client-secret}
+      url:
+        redirect: ${oauth2.google.url.redirect}
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+        login: https://accounts.google.com/o/oauth2/v2/auth
+  flyway:
+    enabled: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
+cloud:
+  aws:
+    stack:
+      auto: false
+jwt:
+  secret: isnt-it-just-tasty-123123123123122312312313
+  access-token-expiry: 1296000000
+  refresh-token-expiry: 2592000000
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
 logging:
   level:
-    # Logger에 sql문이 찍힌다.
-    org.hibernate.SQL: debug
-    p6spy: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+swagger:
+  url: http://localhost:8080
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: 'aws-parameterstore:'
+  jpa:
+    hibernate:
+      ddl-auto: ${jpa.ddl_auto}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+server:
+  port: ${spring.server.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
+cloud:
+  aws:
+    stack:
+      auto: false
+jwt:
+  secret: ${jwt.secret}
+  access-token-expiry: ${jwt.access.expire}
+  refresh-token-expiry: ${jwt.refresh.expire}
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.orm: TRACE
+    org.springframework.transaction: TRACE
+    com.zaxxer.hikari: TRACE
+    com.mysql.cj.jdbc: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
+  file:
+    path: /home/ubuntu
+  config: classpath:logback-spring.xml
+swagger:
+  url: https://tastyjapan.co.kr
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: 'aws-parameterstore:'
+  jpa:
+    hibernate:
+      ddl-auto: ${jpa.ddl_auto}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+server:
+  port: ${spring.server.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: tastyjapan
+cloud:
+  aws:
+    stack:
+      auto: false
+jwt:
+  secret: ${jwt.secret}
+  access-token-expiry: ${jwt.access.expire}
+  refresh-token-expiry: ${jwt.refresh.expire}
+  access-token-header: Authorization
+  refresh-token-header: Refresh-Token
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.orm: TRACE
+    org.springframework.transaction: TRACE
+    com.zaxxer.hikari: TRACE
+    com.mysql.cj.jdbc: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
+  file:
+    path: /home/ubuntu
+  config: classpath:logback-spring.xml
+swagger:
+  url: https://api.tastyjapan.gourmet
