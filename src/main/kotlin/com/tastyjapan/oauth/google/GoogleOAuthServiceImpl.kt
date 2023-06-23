@@ -43,7 +43,8 @@ class GoogleOAuthServiceImpl(
             restTemplate.postForEntity(
                 GOOGLE_TOKEN_REQUEST_URL,
                 params,
-                String::class.java)
+                String::class.java
+            )
         } catch (e: HttpClientErrorException) {
             log.error(e.message)
             throw BusinessException(ErrorType.OAUTH2_GOOGLE_FAIL_EXCEPTION)
@@ -58,14 +59,34 @@ class GoogleOAuthServiceImpl(
             restTemplate.postForEntity(
                 GOOGLE_PROFILE_URI,
                 buildProfileRequest(token),
-                String::class.java)
+                String::class.java
+            )
         } catch (e: HttpClientErrorException) {
             throw BusinessException(ErrorType.OAUTH2_GOOGLE_FAIL_EXCEPTION)
-
 
         }
         return objectMapper.readTree(response.body)
             .get("email").asText()
+    }
+
+    override fun getUserInfo(token: String): UserInfo {
+        val response: ResponseEntity<String> = try {
+            restTemplate.postForEntity(
+                GOOGLE_PROFILE_URI,
+                buildProfileRequest(token),
+                String::class.java
+            )
+        } catch (e: HttpClientErrorException) {
+            throw BusinessException(ErrorType.OAUTH2_GOOGLE_FAIL_EXCEPTION)
+
+        }
+        val email = objectMapper.readTree(response.body)
+            .get("email").asText()
+        val name = objectMapper.readTree(response.body)
+            .get("name").asText()
+        val picture = objectMapper.readTree(response.body)
+            .get("picture").asText()
+        return UserInfo(email = email, name = name, picture = picture)
     }
 
     private fun buildProfileRequest(token: String): HttpEntity<*> {

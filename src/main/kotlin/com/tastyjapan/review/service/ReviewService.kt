@@ -4,6 +4,7 @@ import com.tastyjapan.exception.ErrorType
 import com.tastyjapan.exception.ExceptionResponse
 import com.tastyjapan.exception.InvalidArgumentException
 import com.tastyjapan.exception.TastyJapanException
+import com.tastyjapan.member.domain.Member
 import com.tastyjapan.member.domain.repository.MemberRepository
 import com.tastyjapan.restaurant.domain.repository.RestaurantRepository
 import com.tastyjapan.review.domain.Review
@@ -68,15 +69,15 @@ class ReviewService(
     }
 
     @Transactional
-    fun updateReview(reviewId: Long, reviewRequest: ReviewRequest): Long {
-        invalidArgumentException.checkReviewId(reviewId)
+    fun updateReview(reviewId: Long, reviewRequest: ReviewRequest, member: Member): Long {
+        invalidArgumentException.checkReview(reviewId, member)
         reviewRepository.updateReview(reviewId, reviewRequest.content, reviewRequest.rating)
         return reviewId
     }
 
     @Transactional
-    fun deleteReview(reviewId: Long): Boolean {
-        invalidArgumentException.checkReviewId(reviewId)
+    fun deleteReview(reviewId: Long, member: Member): Boolean {
+        invalidArgumentException.checkReview(reviewId, member)
         reviewRepository.deleteReview(reviewId)
         return true
     }

@@ -28,16 +28,6 @@ class AuthController(
         return ResponseEntity.ok(apiResponse)
     }
 
-    @PostMapping("/signup")
-    fun signup(
-        @RequestHeader(value = "auth-token") token: String,
-        @RequestBody signUpRequest: SignUpRequest
-    ): ResponseEntity<ApiResponse<JwtTokens>> {
-        val result = authService.signup(token, signUpRequest)
-        val apiResponse = ApiUtils.success(result)
-        return ResponseEntity.ok(apiResponse)
-    }
-
     @PostMapping("/refresh")
     fun refresh(@RequestHeader(value = "Refresh-Token") refreshToken: String): ResponseEntity<ApiResponse<JwtTokens>> {
         val result = authService.refresh(refreshToken)

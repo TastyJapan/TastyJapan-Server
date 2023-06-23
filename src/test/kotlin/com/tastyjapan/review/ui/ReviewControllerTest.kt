@@ -45,8 +45,16 @@ class ReviewControllerTest {
         val restaurantId = 456L
 
         val expectedRestaurantReviewsResponse = listOf(
-            RestaurantReviewsResponse(user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()), rating = 4.0, content = "Good food"),
-            RestaurantReviewsResponse(user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()), rating = 3.5, content = "Average experience")
+            RestaurantReviewsResponse(
+                user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()),
+                rating = 4.0,
+                content = "Good food"
+            ),
+            RestaurantReviewsResponse(
+                user = MemberMapper.INSTANCE.memberEntityToResponse(createMemberChoco()),
+                rating = 3.5,
+                content = "Average experience"
+            )
         )
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedRestaurantReviewsResponse))
 
@@ -109,17 +117,18 @@ class ReviewControllerTest {
         val reviewService = mockk<ReviewService>()
         val reviewController = ReviewController(reviewService)
         val reviewId = 123L
-
+        val member = createMemberChoco()
         val reviewRequest = ReviewRequest(userId = 456L, restaurantId = 789L, rating = 4.5, content = "Updated review")
 
         val expectedUpdatedReviewId = 123L
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedUpdatedReviewId))
 
         every {
-            reviewService.updateReview(reviewId, reviewRequest)
+            reviewService.updateReview(reviewId, reviewRequest, member)
         } returns expectedUpdatedReviewId
 
-        val response = reviewController.updateReview(reviewId, reviewRequest)
+        val response =
+            reviewController.updateReview(reviewId = reviewId, reviewRequest = reviewRequest, member = member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
@@ -130,15 +139,16 @@ class ReviewControllerTest {
         val reviewService = mockk<ReviewService>()
         val reviewController = ReviewController(reviewService)
         val reviewId = 123L
+        val member = createMemberChoco()
 
         val expectedDeleted = true
         val expectedResponse = ResponseEntity.ok(ApiUtils.success(expectedDeleted))
 
         every {
-            reviewService.deleteReview(reviewId)
+            reviewService.deleteReview(reviewId, member)
         } returns expectedDeleted
 
-        val response = reviewController.deleteReview(reviewId)
+        val response = reviewController.deleteReview(reviewId = reviewId, member = member)
 
         assertEquals(expectedResponse.statusCode, response.statusCode)
         assertEquals(expectedResponse.body?.getResponse(), response.body?.getResponse())
