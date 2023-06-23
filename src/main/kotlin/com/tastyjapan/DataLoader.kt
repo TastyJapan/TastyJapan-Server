@@ -28,7 +28,7 @@ class DataLoader(
     val reviewRepository: ReviewRepository,
     val menuRepository: MenuRepository
 ): ApplicationRunner {
-    val dataLoaderOn: Boolean = true
+    val dataLoaderOn: Boolean = false
     override fun run(args: ApplicationArguments) {
         if(dataLoaderOn)
             runDataLoader()
