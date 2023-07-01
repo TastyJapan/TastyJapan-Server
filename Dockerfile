@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-slim-buster
+FROM openjdk:17.0.2-slim
 
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} tastyjapan.jar
