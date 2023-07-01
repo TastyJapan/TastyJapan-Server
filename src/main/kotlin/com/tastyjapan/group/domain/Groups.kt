@@ -9,6 +9,7 @@ import javax.persistence.*
 
 @Entity
 @NoArgsConstructor
+@Table(name = "Saved")
 class Groups(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
