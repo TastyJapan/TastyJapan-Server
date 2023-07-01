@@ -75,6 +75,13 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+    org.springframework.orm: TRACE
+    org.springframework.transaction: TRACE
+    com.zaxxer.hikari: TRACE
+    com.mysql.cj.jdbc: TRACE
+  slack:
+    webhook-uri-dev-paid: ${slack.paid_channel_uri}
+    webhook-uri-dev-error: ${slack.error_channel_uri}
 swagger:
   url: http://localhost:8080
 ---

@@ -64,6 +64,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
     // Database
+    runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
 
     // Querydsl
@@ -100,7 +101,8 @@ dependencies {
     implementation("com.github.maricn:logback-slack-appender:1.6.1")
 
     // flyway
-    implementation("org.flywaydb:flyway-core:6.4.2")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
 
     // Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
