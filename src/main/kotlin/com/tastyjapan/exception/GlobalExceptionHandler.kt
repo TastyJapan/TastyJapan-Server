@@ -19,7 +19,7 @@ class GlobalExceptionHandler {
     val log = LogManager.getLogger()
 
     @ExceptionHandler(TastyJapanException::class)
-    fun handleLocoException(tastyJapanException: TastyJapanException): ResponseEntity<ExceptionResponse> {
+    fun handleTastyJapanException(tastyJapanException: TastyJapanException): ResponseEntity<ExceptionResponse> {
         return ResponseEntity.status(tastyJapanException.httpStatus)
             .body(tastyJapanException.body)
     }

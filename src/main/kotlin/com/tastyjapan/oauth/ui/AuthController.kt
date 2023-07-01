@@ -22,8 +22,11 @@ class AuthController(
     private val authService: AuthService
 ) {
     @PostMapping("/signin")
-    fun signIn(@RequestHeader(value = "auth-code") code: String): ResponseEntity<ApiResponse<SignInResponse>> {
-        val result = authService.signIn(code)
+    fun signIn(
+        @RequestHeader(value = "auth-code") code: String,
+        @RequestHeader(value = "provider") provider: String
+    ): ResponseEntity<ApiResponse<SignInResponse>> {
+        val result = authService.signIn(code = code, provider = provider)
         val apiResponse = ApiUtils.success(result)
         return ResponseEntity.ok(apiResponse)
     }

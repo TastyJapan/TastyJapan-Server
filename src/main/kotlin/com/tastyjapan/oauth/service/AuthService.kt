@@ -30,7 +30,7 @@ class AuthService(
     private val accessTokenExpiry: Long = 0
 
     @Transactional
-    fun signIn(code: String): SignInResponse {
+    fun signIn(code: String, provider: String): SignInResponse {
         val token = oAuthService.requestToken(code)
         val email = oAuthService.getUserEmail(token)
 
