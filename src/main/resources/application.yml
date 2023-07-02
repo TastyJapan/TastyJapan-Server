@@ -51,6 +51,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+    password: qwer
 aws:
   paramstore:
     enabled: true
@@ -118,6 +119,7 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+    password: ${redis.password}
 server:
   port: ${spring.server.port}
 aws:
@@ -190,6 +192,7 @@ spring:
   redis:
     host: ${redis.host}
     port: ${redis.port}
+    password: ${redis.password}
 server:
   port: ${spring.server.port}
 aws:
